@@ -49,12 +49,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:paddingBottom="30dp"
                             android:text="@string/about_hwcon_title"
                             android:textSize="32sp" />
 
+                        <!-- Banner image (change image when using for other convention) -->
+                        <ImageView
+                            android:paddingTop="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/hwcon_banner" />
+
                         <TextView
                             style="@style/textStyle_details"
+                            android:paddingTop="16dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/about_description" />
@@ -118,14 +126,6 @@
                             android:layout_height="wrap_content"
                             android:autoLink="email"
                             android:text="@string/about_mail_details" />
-
-                        <!-- Banner image (change image when using for other convention) -->
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:paddingTop="15dp"
-                            android:src="@drawable/hwcon_banner" />
 
                         <Button android:id="@+id/about_btn_aboutapp"
                             android:text="@string/about_this_app"
