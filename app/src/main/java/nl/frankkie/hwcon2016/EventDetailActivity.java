@@ -3,7 +3,7 @@ package nl.frankkie.hwcon2016;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -26,7 +26,7 @@ import nl.frankkie.hwcon2016.util.GoogleApiUtil;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link EventDetailFragment}.
  */
-public class EventDetailActivity extends ActionBarActivity implements
+public class EventDetailActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiUtil.GiveMeGoogleApiClient {

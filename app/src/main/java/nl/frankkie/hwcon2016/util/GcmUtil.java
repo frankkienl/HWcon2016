@@ -10,7 +10,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.acra.ACRA;
 
@@ -285,22 +284,22 @@ public class GcmUtil {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String regId;
-            try {
-                GoogleCloudMessaging gcm;
-                gcm = GoogleCloudMessaging.getInstance(context);
-                regId = gcm.register(GCM_PROJECT_ID);
-                gcmSendRegIdToServer(context, regId);
-                gcmSetRegId(context, regId);
-            } catch (IOException ioe) {
-                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
-                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "", "", ioe);
-                ioe.printStackTrace();
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM, packagename not found\n" + e);
-                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "Error, cannot register for GCM, packagename not found", "", e);
-                e.printStackTrace();
-            }
+//            String regId;
+//            try {
+//                GoogleCloudMessaging gcm;
+//                gcm = GoogleCloudMessaging.getInstance(context);
+//                regId = gcm.register(GCM_PROJECT_ID);
+//                gcmSendRegIdToServer(context, regId);
+//                gcmSetRegId(context, regId);
+//            } catch (IOException ioe) {
+//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
+//                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "", "", ioe);
+//                ioe.printStackTrace();
+//            } catch (PackageManager.NameNotFoundException e) {
+//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM, packagename not found\n" + e);
+//                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "Error, cannot register for GCM, packagename not found", "", e);
+//                e.printStackTrace();
+//            }
             return null;
         }
     }
@@ -315,19 +314,19 @@ public class GcmUtil {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String regId;
-            try {
-                GoogleCloudMessaging gcm;
-                gcm = GoogleCloudMessaging.getInstance(context);
-                gcm.unregister();
-                regId = gcmGetRegId(context);
-                gcmSendUnregisterToServer(context, regId);
-                gcmSetRegId(context, ""); //empty
-            } catch (IOException ioe) {
-                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
-                Util.sendACRAReport("GcmUtil.GcmUnregisterTask.doInBackground", "Error, cannot register for GCM", "", ioe);
-                ioe.printStackTrace();
-            }
+//            String regId;
+//            try {
+//                GoogleCloudMessaging gcm;
+//                gcm = GoogleCloudMessaging.getInstance(context);
+//                gcm.unregister();
+//                regId = gcmGetRegId(context);
+//                gcmSendUnregisterToServer(context, regId);
+//                gcmSetRegId(context, ""); //empty
+//            } catch (IOException ioe) {
+//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
+//                Util.sendACRAReport("GcmUtil.GcmUnregisterTask.doInBackground", "Error, cannot register for GCM", "", ioe);
+//                ioe.printStackTrace();
+//            }
             return null;
         }
     }

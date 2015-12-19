@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -39,11 +39,11 @@ import nl.frankkie.hwcon2016.util.Util;
  * {@link EventListFragment.Callbacks} interface
  * to listen for item selections.
  * <p/>
- * To use ActionBar and Fragments, extend from ActionBarActivity,
- * as ActionBarActivity supports Fragments.
+ * To use ActionBar and Fragments, extend from AppCompatActivity,
+ * as AppCompatActivity supports Fragments.
  * http://stackoverflow.com/questions/18451575/action-bar-fragment-activity
  */
-public class ScheduleActivity extends ActionBarActivity implements
+public class ScheduleActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiUtil.GiveMeGoogleApiClient,
