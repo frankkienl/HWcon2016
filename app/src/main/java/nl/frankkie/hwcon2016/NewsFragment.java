@@ -46,7 +46,7 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri = Uri.parse("content://nl.frankkie.hwcon2016/news/");
-        CursorLoader cl = new CursorLoader(getActivity(), uri, NEWS_COLUMNS, null, null, null);
+        CursorLoader cl = new CursorLoader(getActivity(), uri, NEWS_COLUMNS, null, null, "_id DESC");
         return cl;
     }
 
