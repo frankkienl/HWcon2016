@@ -126,8 +126,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 String descriptionString = data.getString(2);
                 mDescription.setText(Html.fromHtml(descriptionString));
                 mKeywords.setText(data.getString(3));
-                mStartTime.setText(Util.getDataTimeString(data.getLong(4)));
-                mEndTime.setText(Util.getDataTimeString(data.getLong(5)));
+                mStartTime.setText(Util.getDataTimeString(data.getString(4)));
+                mEndTime.setText(Util.getDataTimeString(data.getString(5)));
                 String image = data.getString(6);
                 Ion.with(this)
                         .load(image)

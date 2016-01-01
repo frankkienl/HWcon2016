@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true /* use ProGuard for release builds */
+            minifyEnabled false /* use ProGuard for release builds */
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -30,8 +30,8 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.+'
 
     //Google Play Serivces, needed for GCM (Push Notifications) and Google+ Login
-    compile 'com.google.android.gms:play-services-plus:8.3.0'
-    compile 'com.google.android.gms:play-services-games:8.3.0'
+    compile 'com.google.android.gms:play-services-plus:8.4.0'
+    compile 'com.google.android.gms:play-services-games:8.4.0'
 
     //Barcode scanner library
     //http://stackoverflow.com/questions/27851512/how-to-integrate-zxing-library-to-android-studio-for-barcode-scanning
