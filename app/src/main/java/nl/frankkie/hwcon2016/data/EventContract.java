@@ -37,7 +37,6 @@ public class EventContract {
         public static final String COLUMN_NAME_DESCRIPTION_NL = "description_nl";
         public static final String COLUMN_NAME_KEYWORDS = "keywords";
         public static final String COLUMN_NAME_IMAGE = "image";
-        public static final String COLUMN_NAME_COLOR = "color";
         public static final String COLUMN_NAME_START_TIME = "start_time";
         public static final String COLUMN_NAME_END_TIME = "end_time";
         public static final String COLUMN_NAME_LOCATION_ID = "location_id";
@@ -65,7 +64,6 @@ public class EventContract {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_DESCRIPTION_NL = "description_nl";
         public static final String COLUMN_NAME_IMAGE = "image";
-        public static final String COLUMN_NAME_COLOR = "color";
 
         public static Uri buildSpeakerUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

@@ -51,7 +51,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventContract.EventEntry.COLUMN_NAME_KEYWORDS,
             EventContract.EventEntry.COLUMN_NAME_START_TIME,
             EventContract.EventEntry.COLUMN_NAME_END_TIME,
-            EventContract.EventEntry.COLUMN_NAME_COLOR,
             EventContract.EventEntry.COLUMN_NAME_IMAGE,
             EventContract.LocationEntry.TABLE_NAME + "." + EventContract.LocationEntry._ID,
             EventContract.LocationEntry.COLUMN_NAME_NAME,
@@ -63,7 +62,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventContract.SpeakerEntry.TABLE_NAME + "." + EventContract.SpeakerEntry._ID,
             EventContract.SpeakerEntry.TABLE_NAME + "." + EventContract.SpeakerEntry.COLUMN_NAME_NAME,
             EventContract.SpeakerEntry.TABLE_NAME + "." + EventContract.SpeakerEntry.COLUMN_NAME_DESCRIPTION,
-            EventContract.SpeakerEntry.TABLE_NAME + "." + EventContract.SpeakerEntry.COLUMN_NAME_COLOR,
             EventContract.SpeakerEntry.TABLE_NAME + "." + EventContract.SpeakerEntry.COLUMN_NAME_IMAGE
     };
 
@@ -130,21 +128,20 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 mKeywords.setText(data.getString(3));
                 mStartTime.setText(Util.getDataTimeString(data.getLong(4)));
                 mEndTime.setText(Util.getDataTimeString(data.getLong(5)));
-                String color = data.getString(6);
-                String image = data.getString(7);
+                String image = data.getString(6);
                 Ion.with(this)
                         .load(image)
                         .withBitmap()
                         .error(R.drawable.transparentpixel)
                         .placeholder(R.drawable.transparentpixel)
                         .intoImageView(mImage);
-                int locationId = data.getInt(8);
-                mLocation.setText(data.getString(9));
-                mLocationDescription.setText(data.getString(10));
-                int floor = data.getInt(11);
+                int locationId = data.getInt(7);
+                mLocation.setText(data.getString(8));
+                mLocationDescription.setText(data.getString(9));
+                int floor = data.getInt(10);
                 mLocationFloor.setText(getFloorName(floor));
                 //Star
-                handleStar(!data.isNull(12));
+                handleStar(!data.isNull(11));
             }
         } else if (cursorLoader.getId() == EVENT_SPEAKERS_LOADER) {
             //List of speakers of this Event.
