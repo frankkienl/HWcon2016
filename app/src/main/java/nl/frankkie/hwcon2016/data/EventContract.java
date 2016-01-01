@@ -19,6 +19,7 @@ public class EventContract {
     public static final String PATH_FAVORITES = "favorites";
     public static final String PATH_QR = "qr";
     public static final String PATH_QRFOUND = "qrfound";
+    public static final String PATH_NEWS = "news";
 
     /**
      * Events
@@ -134,10 +135,11 @@ public class EventContract {
         public static final String TYPE_LOCATION = "location";
         public static final String TYPE_SPEAKER = "speaker";
 
-        public static Uri buildFavoriteUri(long id){
+        public static Uri buildFavoriteUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
-        public static Uri buildFavoritesByTypeEventUri(long eventId){
+
+        public static Uri buildFavoritesByTypeEventUri(long eventId) {
             return ContentUris.withAppendedId(CONTENT_URI.buildUpon().appendPath("event").build(), eventId);
         }
     }
@@ -162,11 +164,11 @@ public class EventContract {
         public static final String COLUMN_NAME_DESCRIPTION_NL = "description_nl";
         public static final String COLUMN_NAME_IMAGE = "image";
 
-        public static Uri buildQrUri(long id){
+        public static Uri buildQrUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildQrByHashUri(String hash){
+        public static Uri buildQrByHashUri(String hash) {
             //content://nl.frankkie.hwcon2016/qr/hash/<HASH>
             return CONTENT_URI.buildUpon().appendPath("hash").appendPath(hash).build();
         }
@@ -188,8 +190,28 @@ public class EventContract {
         public static final String COLUMN_NAME_QR_ID = "qr_id"; //which one
         public static final String COLUMN_NAME_TIME = "time_found"; //record the time when this QR was first found.
 
-        public static Uri buildQrFoundUri(long id){
+        public static Uri buildQrFoundUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    /**
+     * News
+     * This table will contain news articles from the convention website
+     */
+    public static final class NewsEntry implements BaseColumns {
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_NEWS).build();
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_NEWS;
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_NEWS;
+        public static final String TABLE_NAME = "news";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_IMAGE = "image";
+        public static final String COLUMN_NAME_URL = "url";
+
+        public static Uri buildNewsUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI,id);
         }
     }
 }

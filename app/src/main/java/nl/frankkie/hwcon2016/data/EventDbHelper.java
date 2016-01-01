@@ -93,6 +93,13 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 "UNIQUE(" + EventContract.QrFoundEntry.COLUMN_NAME_QR_ID + ") ON CONFLICT IGNORE )";
         //Made qr_id unique to preserve first time_found when found multiple times, and to prevent duplicates.
         db.execSQL(sqlQrFound);
+
+        String sqlNews = "CREATE TABLE " + EventContract.NewsEntry.TABLE_NAME + " ( " +
+                EventContract.NewsEntry._ID + " INTEGER PRIMARY KEY, " +
+                EventContract.NewsEntry.COLUMN_NAME_TITLE + " TEXT, " +
+                EventContract.NewsEntry.COLUMN_NAME_IMAGE + " TEXT, " +
+                EventContract.NewsEntry.COLUMN_NAME_URL + " TEXT );";
+        db.execSQL(sqlNews);
     }
 
     @Override
