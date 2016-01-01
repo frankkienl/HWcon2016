@@ -111,6 +111,7 @@
             </intent-filter>
         //-->
         </activity>
+        <activity android:name=".NewsActivity" />
 
         <provider
             android:name="nl.frankkie.hwcon2016.data.EventProvider"

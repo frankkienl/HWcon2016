@@ -75,4 +75,7 @@
     <string name="ask_nickname">Wat je nickname?</string>
     <string name="browse_empty">Even geduld aub... Data wordt gesynchroniseerd.</string>
     <string name="login_details">\nLogin om je schema te synchroniseren tussen je toestellen.\n\nInloggen is verplicht om mee te kunnen doen met de QR Jacht!\n\nGebruik de knop hieronder om in te loggen.</string>
+    <string name="title_section_news">Nieuws</string>
+    <string name="news_empty_placeholders">Geen nieuwsartikelen gevonden.</string>
+    <string name="news_empty_placeholder">Geen nieuwsberichten gevonden.</string>
 </resources>

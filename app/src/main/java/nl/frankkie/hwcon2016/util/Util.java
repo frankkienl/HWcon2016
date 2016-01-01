@@ -35,6 +35,7 @@ import nl.frankkie.hwcon2016.AboutActivity;
 import nl.frankkie.hwcon2016.EventListActivity;
 import nl.frankkie.hwcon2016.LoginActivity;
 import nl.frankkie.hwcon2016.MapActivity;
+import nl.frankkie.hwcon2016.NewsActivity;
 import nl.frankkie.hwcon2016.QrHuntActivity;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.ScheduleActivity;
@@ -95,6 +96,11 @@ public class Util {
             case 5: {
                 if (!(thisAct instanceof AboutActivity))
                     navigateFromNavDrawer(thisAct, new Intent(thisAct, AboutActivity.class));
+                break;
+            }
+            case 6: {
+                if (!(thisAct instanceof NewsActivity))
+                    navigateFromNavDrawer(thisAct, new Intent(thisAct, NewsActivity.class));
                 break;
             }
         }

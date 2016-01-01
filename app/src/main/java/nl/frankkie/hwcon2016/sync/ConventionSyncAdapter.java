@@ -270,6 +270,23 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
             getContext().getContentResolver().notifyChange(EventContract.SpeakersInEventsEntry.CONTENT_URI, null);
             //</editor-fold>
 
+            //<editor-fold desc="news">
+            JSONArray news = data.getJSONArray("news");
+            ContentValues[] nCVs = new ContentValues[news.length()];
+            for (int i=0; i<news.length(); i++){
+                JSONObject n = news.getJSONObject(i);
+                ContentValues ncv = new ContentValues();
+                ncv.put(EventContract.NewsEntry._ID, n.getInt("_id"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_TITLE, n.getString("title"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_IMAGE, n.getString("image"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_URL, n.getString("url"));
+                nCVs[i] = ncv;
+            }
+            getContext().getContentResolver().delete(EventContract.NewsEntry.CONTENT_URI, null, null);
+            getContext().getContentResolver().bulkInsert(EventContract.NewsEntry.CONTENT_URI, nCVs);
+            getContext().getContentResolver().notifyChange(EventContract.NewsEntry.CONTENT_URI, null);
+            //</editor-fold>
+
             //<editor-fold desc="qr">
             //QR is a separate table, to keep the userdata (found or not) separate from the convention-data
             if (data.has("qr")) {
