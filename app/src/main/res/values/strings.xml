@@ -66,11 +66,11 @@
     <!-- Google Play Games //-->
     <!-- 935982150118-6d23ufpeth053935sniv19f82t1ab407.apps.googleusercontent.com //-->
     <string name="google_play_games_app_id" translatable="false">935982150118</string>
-    <string name="achievement_ready_to_go">CgkI5uOI554bEAIQAQ</string>
-    <string name="achievement_personal_schedule">CgkI5uOI554bEAIQAg</string>
-    <string name="achievement_its_a_start">CgkI5uOI554bEAIQAw</string>
-    <string name="achievement_easter_egg">CgkI5uOI554bEAIQBA</string>
-    <string name="achievement_find_5">CgkI5uOI554bEAIQBQ</string>
+    <string name="achievement_ready_to_go" translatable="false">CgkI5uOI554bEAIQAQ</string>
+    <string name="achievement_personal_schedule" translatable="false">CgkI5uOI554bEAIQAg</string>
+    <string name="achievement_its_a_start" translatable="false">CgkI5uOI554bEAIQAw</string>
+    <string name="achievement_easter_egg" translatable="false">CgkI5uOI554bEAIQBA</string>
+    <string name="achievement_find_5" translatable="false">CgkI5uOI554bEAIQBQ</string>
     <string name="sign_out">Sign out</string>
     <string name="view_achievements">View Achievements</string>
     <string name="qrlist_empty_placeholder">QR code list is empty</string>
