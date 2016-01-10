@@ -35,6 +35,7 @@ import nl.frankkie.hwcon2016.AboutActivity;
 import nl.frankkie.hwcon2016.EventListActivity;
 import nl.frankkie.hwcon2016.LoginActivity;
 import nl.frankkie.hwcon2016.MapActivity;
+import nl.frankkie.hwcon2016.NewsActivity;
 import nl.frankkie.hwcon2016.QrHuntActivity;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.ScheduleActivity;
@@ -46,13 +47,28 @@ public class Util {
     public static final int navigationDrawerIntentFlags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
     public static final String DATE_FORMAT = "E, HH:mm"; //example: Sunday, 16:30
-    public static SimpleDateFormat displayDataFormat = new SimpleDateFormat(DATE_FORMAT);
+    public static SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT);
+    public static SimpleDateFormat mysqlDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+
+    public static String getDataTimeString(String timeStringFromDatabase) {
+        //Parse MySQL DateType format.
+        //http://stackoverflow.com/questions/9945072/convert-string-to-date-in-java
+        Date parsedDate = new Date();
+        try {
+            parsedDate = mysqlDateFormat.parse(timeStringFromDatabase);
+        } catch (Exception e) {
+            //oops
+            sendACRAReport("Util.getDataTimeString", e.toString(), "date to parse: " + timeStringFromDatabase, e);
+        }
+        return displayDateFormat.format(parsedDate);
+    }
 
     public static String getDataTimeString(long timestamp) {
+        //OLD VERSION, in hte old version we used timestamps, new version uses MySQL DateTime.
         //*1000, because
         // http://www.onlineconversion.com/unix_time.htm
         // uses SECONDS from 1970, but Date uses MILLISECONDS from 1970
-        return displayDataFormat.format(new Date(timestamp * 1000));
+        return displayDateFormat.format(new Date(timestamp * 1000));
     }
 
     public static void navigateFromNavDrawer(Activity from, Intent to) {
@@ -97,6 +113,11 @@ public class Util {
                     navigateFromNavDrawer(thisAct, new Intent(thisAct, AboutActivity.class));
                 break;
             }
+            case 6: {
+                if (!(thisAct instanceof NewsActivity))
+                    navigateFromNavDrawer(thisAct, new Intent(thisAct, NewsActivity.class));
+                break;
+            }
         }
     }
 
@@ -138,7 +159,7 @@ public class Util {
         Util.syncData(context, Util.SYNCFLAG_UPLOAD_FAVORITES);
     }
 
-    public static void sendQrFound(Context context){
+    public static void sendQrFound(Context context) {
         //Upload found QR-codes.
         Util.syncData(context, Util.SYNCFLAG_UPLOAD_QRFOUND);
     }
@@ -331,6 +352,7 @@ public class Util {
 
     /**
      * SHA1 hash
+     *
      * @param toHash
      * @return hash
      */

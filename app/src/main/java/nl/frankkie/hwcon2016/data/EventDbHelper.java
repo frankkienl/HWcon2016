@@ -15,7 +15,7 @@ import nl.frankkie.hwcon2016.data.EventContract.SpeakersInEventsEntry;
  */
 public class EventDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "events.db";
 
     public EventDbHelper(Context context) {
@@ -32,11 +32,10 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 EventEntry._ID + " INTEGER PRIMARY KEY, " +
                 EventEntry.COLUMN_NAME_TITLE + " TEXT, " +
                 EventEntry.COLUMN_NAME_TITLE_NL + " TEXT, " +
-                EventEntry.COLUMN_NAME_DESCRIPTION + " TEXT, " +                
+                EventEntry.COLUMN_NAME_DESCRIPTION + " TEXT, " +
                 EventEntry.COLUMN_NAME_DESCRIPTION_NL + " TEXT, " +
                 EventEntry.COLUMN_NAME_KEYWORDS + " TEXT, " +
                 EventEntry.COLUMN_NAME_IMAGE + " TEXT, " +
-                EventEntry.COLUMN_NAME_COLOR + " TEXT, " +
                 EventEntry.COLUMN_NAME_START_TIME + " TEXT, " +
                 EventEntry.COLUMN_NAME_END_TIME + " TEXT, " +
                 EventEntry.COLUMN_NAME_LOCATION_ID + " TEXT, " +
@@ -49,8 +48,7 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 SpeakerEntry.COLUMN_NAME_NAME_NL + " TEXT, " +
                 SpeakerEntry.COLUMN_NAME_DESCRIPTION + " TEXT, " +
                 SpeakerEntry.COLUMN_NAME_DESCRIPTION_NL + " TEXT, " +
-                SpeakerEntry.COLUMN_NAME_IMAGE + " TEXT, " +
-                SpeakerEntry.COLUMN_NAME_COLOR + " TEXT )";
+                SpeakerEntry.COLUMN_NAME_IMAGE + " TEXT ) ";
         db.execSQL(sqlSpeaker);
 
         String sqlLocation = "CREATE TABLE " + LocationEntry.TABLE_NAME + " ( " +
@@ -93,8 +91,15 @@ public class EventDbHelper extends SQLiteOpenHelper {
                 EventContract.QrFoundEntry.COLUMN_NAME_QR_ID + " INTEGER, " +
                 EventContract.QrFoundEntry.COLUMN_NAME_TIME + " TEXT, " +
                 "UNIQUE(" + EventContract.QrFoundEntry.COLUMN_NAME_QR_ID + ") ON CONFLICT IGNORE )";
-                //Made qr_id unique to preserve first time_found when found multiple times, and to prevent duplicates.
+        //Made qr_id unique to preserve first time_found when found multiple times, and to prevent duplicates.
         db.execSQL(sqlQrFound);
+
+        String sqlNews = "CREATE TABLE " + EventContract.NewsEntry.TABLE_NAME + " ( " +
+                EventContract.NewsEntry._ID + " INTEGER PRIMARY KEY, " +
+                EventContract.NewsEntry.COLUMN_NAME_TITLE + " TEXT, " +
+                EventContract.NewsEntry.COLUMN_NAME_IMAGE + " TEXT, " +
+                EventContract.NewsEntry.COLUMN_NAME_URL + " TEXT );";
+        db.execSQL(sqlNews);
     }
 
     @Override
@@ -105,16 +110,10 @@ public class EventDbHelper extends SQLiteOpenHelper {
         db.execSQL(sql + LocationEntry.TABLE_NAME);
         db.execSQL(sql + SpeakerEntry.TABLE_NAME);
         db.execSQL(sql + SpeakersInEventsEntry.TABLE_NAME);
-        //For future updates, don't delete favorites, but upgrade.
-        if (oldVersion <= 7) {
-            //Favorites table not changed since db-version 7
-            //Don't delete if not needed
-            db.execSQL(sql + FavoritesEntry.TABLE_NAME);
-        }
-        //QR-hunt tables added in DB-version 8
         db.execSQL(sql + EventContract.QrEntry.TABLE_NAME);
         db.execSQL(sql + EventContract.QrFoundEntry.TABLE_NAME);
-        //
+        db.execSQL(sql + FavoritesEntry.TABLE_NAME);
+
         createTables(db);
     }
 

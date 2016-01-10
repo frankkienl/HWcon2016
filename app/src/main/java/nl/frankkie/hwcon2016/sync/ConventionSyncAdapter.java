@@ -29,6 +29,7 @@ import nl.frankkie.hwcon2016.util.Util;
 public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
 
     ContentResolver mContentResolver;
+    public static final String TAG = "Convention";
 
     public ConventionSyncAdapter(Context c, boolean autoInit) {
         super(c, autoInit);
@@ -43,7 +44,7 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         //Placed it (download and parsing) into separate methods, because the IDE complained this method was too complex.
-        Log.d("Convention", "SyncAdapter: onPerformSync");
+        Log.d(TAG, "SyncAdapter: onPerformSync");
         int syncFlags = extras.getInt("syncflags", Util.SYNCFLAG_CONVENTION_DATA);
         //http://stackoverflow.com/questions/6067411/checking-flag-bits-java
         if ((syncFlags & Util.SYNCFLAG_CONVENTION_DATA) == Util.SYNCFLAG_CONVENTION_DATA) {
@@ -199,7 +200,6 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                 values.put(EventContract.EventEntry.COLUMN_NAME_DESCRIPTION_NL, event.getString("description_nl"));
                 values.put(EventContract.EventEntry.COLUMN_NAME_KEYWORDS, event.getString("keywords"));
                 values.put(EventContract.EventEntry.COLUMN_NAME_IMAGE, event.getString("image"));
-                values.put(EventContract.EventEntry.COLUMN_NAME_COLOR, event.getString("color"));
                 values.put(EventContract.EventEntry.COLUMN_NAME_START_TIME, event.getString("start_time"));
                 values.put(EventContract.EventEntry.COLUMN_NAME_END_TIME, event.getString("end_time"));
                 values.put(EventContract.EventEntry.COLUMN_NAME_LOCATION_ID, event.getInt("location_id"));
@@ -227,7 +227,6 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                 values.put(EventContract.SpeakerEntry.COLUMN_NAME_DESCRIPTION, speaker.getString("description"));
                 values.put(EventContract.SpeakerEntry.COLUMN_NAME_DESCRIPTION_NL, speaker.getString("description_nl"));
                 values.put(EventContract.SpeakerEntry.COLUMN_NAME_IMAGE, speaker.getString("image"));
-                values.put(EventContract.SpeakerEntry.COLUMN_NAME_COLOR, speaker.getString("color"));
                 speakerCVs[i] = values;
             }
             getContext().getContentResolver().delete(EventContract.SpeakerEntry.CONTENT_URI, null, null);
@@ -269,6 +268,23 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
             getContext().getContentResolver().delete(EventContract.SpeakersInEventsEntry.CONTENT_URI, null, null);
             getContext().getContentResolver().bulkInsert(EventContract.SpeakersInEventsEntry.CONTENT_URI, sieCVs);
             getContext().getContentResolver().notifyChange(EventContract.SpeakersInEventsEntry.CONTENT_URI, null);
+            //</editor-fold>
+
+            //<editor-fold desc="news">
+            JSONArray news = data.getJSONArray("news");
+            ContentValues[] nCVs = new ContentValues[news.length()];
+            for (int i=0; i<news.length(); i++){
+                JSONObject n = news.getJSONObject(i);
+                ContentValues ncv = new ContentValues();
+                ncv.put(EventContract.NewsEntry._ID, n.getInt("_id"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_TITLE, n.getString("title"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_IMAGE, n.getString("image"));
+                ncv.put(EventContract.NewsEntry.COLUMN_NAME_URL, n.getString("url"));
+                nCVs[i] = ncv;
+            }
+            getContext().getContentResolver().delete(EventContract.NewsEntry.CONTENT_URI, null, null);
+            getContext().getContentResolver().bulkInsert(EventContract.NewsEntry.CONTENT_URI, nCVs);
+            getContext().getContentResolver().notifyChange(EventContract.NewsEntry.CONTENT_URI, null);
             //</editor-fold>
 
             //<editor-fold desc="qr">

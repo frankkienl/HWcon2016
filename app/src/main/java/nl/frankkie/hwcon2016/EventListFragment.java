@@ -61,7 +61,6 @@ public class EventListFragment extends Fragment implements LoaderManager.LoaderC
             EventContract.EventEntry.COLUMN_NAME_TITLE,
             EventContract.EventEntry.COLUMN_NAME_START_TIME,
             EventContract.EventEntry.COLUMN_NAME_IMAGE,
-            EventContract.EventEntry.COLUMN_NAME_COLOR
     };
 
     @Override

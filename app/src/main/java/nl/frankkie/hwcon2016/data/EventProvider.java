@@ -60,7 +60,10 @@ public class EventProvider extends ContentProvider {
     public static final int QR_FOUND_ID = 701;
     //content://nl.frankkie.hwcon2016/qrfound/qr/ID (ITEM, using QR-id)
     public static final int QR_FOUND_QR_ID = 702;
-
+    //content://nl.frankkie.hwcon2016/news/ (LIST of newsitems)
+    public static final int NEWS = 800;
+    //content://nl.frankkie.hwcon2016/news/ID (newsitem)
+    public static final int NEWS_ID = 801;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     SQLiteOpenHelper mOpenHelper;
@@ -146,6 +149,8 @@ public class EventProvider extends ContentProvider {
         matcher.addURI(EventContract.CONTENT_AUTHORITY, EventContract.PATH_QRFOUND, QR_FOUND);
         matcher.addURI(EventContract.CONTENT_AUTHORITY, EventContract.PATH_QRFOUND + "/#", QR_FOUND_ID);
         matcher.addURI(EventContract.CONTENT_AUTHORITY, EventContract.PATH_QRFOUND + "/qr/#", QR_FOUND_QR_ID);
+        matcher.addURI(EventContract.CONTENT_AUTHORITY, EventContract.PATH_NEWS, NEWS);
+        matcher.addURI(EventContract.CONTENT_AUTHORITY, EventContract.PATH_NEWS + "/#", NEWS_ID);
         return matcher;
     }
 
@@ -402,6 +407,30 @@ public class EventProvider extends ContentProvider {
                 );
                 break;
             }
+            case NEWS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        EventContract.NewsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case NEWS_ID: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        EventContract.NewsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -460,6 +489,12 @@ public class EventProvider extends ContentProvider {
             }
             case QR_FOUND_QR_ID: {
                 return EventContract.QrFoundEntry.CONTENT_ITEM_TYPE; //1 found qr (with time) by qr_id
+            }
+            case NEWS: {
+                return EventContract.NewsEntry.CONTENT_TYPE; //list
+            }
+            case NEWS_ID: {
+                return EventContract.NewsEntry.CONTENT_ITEM_TYPE; //1 newsitem
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -538,6 +573,15 @@ public class EventProvider extends ContentProvider {
                     returnUri = EventContract.QrFoundEntry.buildQrFoundUri(id);
                 } else {
                     throw new SQLException("Failed to insert QrFound row into: " + uri);
+                }
+                break;
+            }
+            case NEWS: {
+                long id = db.insert(EventContract.NewsEntry.TABLE_NAME, null, values);
+                if (id != -1L) {
+                    returnUri = EventContract.NewsEntry.buildNewsUri(id);
+                } else {
+                    throw new SQLException("Failed to insert News row into: " + uri);
                 }
                 break;
             }
@@ -634,7 +678,7 @@ public class EventProvider extends ContentProvider {
                 }
                 return returnInt;
             }
-            //TODO: implement BulkInsert for QRFOUND
+            //TODO: implement BulkInsert for QRFOUND and NEWS
             //Note: No Rush, default implementation is to use regular insert when BulkInsert is not implement.
             //It'll work, but less optimized.
             default:
@@ -674,6 +718,10 @@ public class EventProvider extends ContentProvider {
             }
             case QR_FOUND: {
                 numberOfRowsDeleted = db.delete(EventContract.QrFoundEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            }
+            case NEWS: {
+                numberOfRowsDeleted = db.delete(EventContract.NewsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             default:
@@ -719,6 +767,10 @@ public class EventProvider extends ContentProvider {
             }
             case QR_FOUND: {
                 rowsUpdated = db.update(EventContract.QrFoundEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            }
+            case NEWS: {
+                rowsUpdated = db.update(EventContract.NewsEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             }
             default:

@@ -35,7 +35,7 @@ public class ScheduleListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         viewHolder.titleView.setText(cursor.getString(ScheduleListFragment.COL_TITLE));
-        long time = cursor.getLong(ScheduleListFragment.COL_TIME);
+        String time = cursor.getString(ScheduleListFragment.COL_TIME);
         viewHolder.timeView.setText(Util.getDataTimeString(time));
         viewHolder.locationView.setText(cursor.getString(ScheduleListFragment.COL_LOCATION));
         //no image or color in Schedule

@@ -54,7 +54,6 @@ public class ScheduleListFragment extends ListFragment implements LoaderManager.
     public static final int COL_TITLE = 1;
     public static final int COL_TIME = 2;
     public static final int COL_IMAGE = 3;
-    public static final int COL_COLOR = 4;
     public static final int COL_LOCATION = 5;
 
     public static final String[] SCHEDULE_COLUMNS = {
@@ -62,7 +61,6 @@ public class ScheduleListFragment extends ListFragment implements LoaderManager.
             EventContract.EventEntry.COLUMN_NAME_TITLE,
             EventContract.EventEntry.COLUMN_NAME_START_TIME,
             EventContract.EventEntry.COLUMN_NAME_IMAGE,
-            EventContract.EventEntry.COLUMN_NAME_COLOR,
             EventContract.LocationEntry.COLUMN_NAME_NAME
     };
 
