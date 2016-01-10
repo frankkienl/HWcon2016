@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+
+import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.fragments.NewsFragment;
 
 /**
  * Created by FrankkieNL on 1-1-2016.

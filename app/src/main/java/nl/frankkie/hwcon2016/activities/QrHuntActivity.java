@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,7 +21,8 @@ import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
-import nl.frankkie.hwcon2016.util.GcmUtil;
+import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
 import nl.frankkie.hwcon2016.util.Util;
 

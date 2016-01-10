@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.acra.ACRA;
+
+import nl.frankkie.hwcon2016.R;
 
 /**
  * Created by FrankkieNL on 13-1-2015.

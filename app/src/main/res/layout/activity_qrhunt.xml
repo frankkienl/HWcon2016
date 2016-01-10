@@ -19,14 +19,14 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.frankkie.hwcon2016.QrHuntActivity">
+        tools:context=".activities.QrHuntActivity">
         <!-- As the main content view, the view below consumes the entire
                  space available using match_parent in both dimensions. -->
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="nl.frankkie.hwcon2016.QrHuntActivity">
+            tools:context=".activities.QrHuntActivity">
 
             <!--
             TODO: Fill
@@ -39,7 +39,7 @@
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/qrlist"
-                android:name="nl.frankkie.hwcon2016.QrListFragment"
+                android:name="nl.frankkie.hwcon2016.fragments.QrListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".QrListActivity"
@@ -55,7 +55,7 @@
              the container. -->
         <fragment
             android:id="@+id/navigation_drawer"
-            android:name="nl.frankkie.hwcon2016.NavigationDrawerFragment"
+            android:name="nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

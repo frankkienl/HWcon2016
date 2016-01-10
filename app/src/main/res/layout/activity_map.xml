@@ -19,14 +19,14 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.frankkie.hwcon2016.MapActivity">
+        tools:context=".activities.MapActivity">
         <!-- As the main content view, the view below consumes the entire
                  space available using match_parent in both dimensions. -->
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="nl.frankkie.hwcon2016.MapActivity">
+            tools:context=".activities.MapActivity">
 
             <!--
             TODO: Use custom view for map instead of WebView
@@ -47,7 +47,7 @@
              the container. -->
         <fragment
             android:id="@+id/navigation_drawer"
-            android:name="nl.frankkie.hwcon2016.NavigationDrawerFragment"
+            android:name="nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

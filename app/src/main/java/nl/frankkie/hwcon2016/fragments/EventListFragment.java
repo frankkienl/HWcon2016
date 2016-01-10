@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import nl.frankkie.hwcon2016.adapters.EventAdapter;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
 
 /**
@@ -110,7 +111,7 @@ public class EventListFragment extends Fragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mEventAdapter = new EventAdapter(getActivity(), null, 0);
 
-        View view = inflater.inflate(R.layout.fragment_event_gridlist, container, false);     
+        View view = inflater.inflate(R.layout.fragment_event_gridlist, container, false);
         mGridView = (GridView) view.findViewById(R.id.event_list);
         mGridView.setAdapter(mEventAdapter);
 

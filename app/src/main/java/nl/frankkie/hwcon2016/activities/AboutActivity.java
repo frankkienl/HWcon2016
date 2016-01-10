@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -15,10 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.Util;
 
 
-public class NewsActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class AboutActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     //<editor-fold desc="ActionBar Stuff">
     /**
@@ -92,13 +94,38 @@ public class NewsActivity extends AppCompatActivity implements NavigationDrawerF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.activity_about);
         initToolbar();
         initUI();
     }
 
     public void initUI() {
-       //nothing to do here, the magic happens in the Fragment
+        Button btnViewMap = (Button) findViewById(R.id.about_view_maps);
+        btnViewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                //i.setData(Uri.parse("https://www.google.nl/maps?t=m&z=15&cid=11779929733433826402"));
+                //i.setData(Uri.parse("geo:52.3118607,4.6636143"));
+                //i.setData(Uri.parse("geo:0,0?q=52.3118607,4.6636143(Venue)"));
+                i.setData(Uri.parse("geo:0,0?q=IJweg%201094%202133%20MH%20Hoofddorp"));
+                try {
+                    startActivity(i);
+                } catch (ActivityNotFoundException anfe) {
+                    //This happens on the emulator, when google maps is not installed
+                    Toast.makeText(AboutActivity.this, R.string.about_map_app_not_found, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Button btnAboutApp = (Button) findViewById(R.id.about_btn_aboutapp);
+        btnAboutApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(AboutActivity.this, AboutAppActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 }

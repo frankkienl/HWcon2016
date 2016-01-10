@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -30,6 +30,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.acra.ACRA;
 
+import nl.frankkie.hwcon2016.adapters.QrListAdapter;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
 import nl.frankkie.hwcon2016.util.GcmUtil;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;

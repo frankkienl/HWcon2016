@@ -1,8 +1,6 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+
+import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.fragments.QrListFragment;
 
 /**
  * Created by fbouwens on 23-01-15.

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -30,8 +31,7 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.+'
 
     //Google Play Serivces, needed for GCM (Push Notifications) and Google+ Login
-    compile 'com.google.android.gms:play-services-plus:8.4.0'
-    compile 'com.google.android.gms:play-services-games:8.4.0'
+    compile 'com.google.android.gms:play-services:8.3.0'
 
     //Barcode scanner library
     //http://stackoverflow.com/questions/27851512/how-to-integrate-zxing-library-to-android-studio-for-barcode-scanning

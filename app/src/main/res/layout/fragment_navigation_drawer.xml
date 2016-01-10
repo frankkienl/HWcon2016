@@ -6,4 +6,4 @@
     android:divider="@android:color/darker_gray"
     android:dividerHeight="1dp"
     android:background="#EEE"
-    tools:context="nl.frankkie.hwcon2016.NavigationDrawerFragment" />
+    tools:context=".fragments.NavigationDrawerFragment" />

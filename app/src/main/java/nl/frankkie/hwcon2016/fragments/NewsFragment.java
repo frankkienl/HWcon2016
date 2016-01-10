@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 
 import android.content.Intent;
@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import nl.frankkie.hwcon2016.adapters.NewsListAdapter;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
 import nl.frankkie.hwcon2016.util.Util;
 

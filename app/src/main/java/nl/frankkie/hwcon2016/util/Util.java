@@ -31,14 +31,14 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import nl.frankkie.hwcon2016.AboutActivity;
-import nl.frankkie.hwcon2016.EventListActivity;
-import nl.frankkie.hwcon2016.LoginActivity;
-import nl.frankkie.hwcon2016.MapActivity;
-import nl.frankkie.hwcon2016.NewsActivity;
-import nl.frankkie.hwcon2016.QrHuntActivity;
+import nl.frankkie.hwcon2016.activities.AboutActivity;
+import nl.frankkie.hwcon2016.activities.EventListActivity;
+import nl.frankkie.hwcon2016.activities.LoginActivity;
+import nl.frankkie.hwcon2016.activities.MapActivity;
+import nl.frankkie.hwcon2016.activities.NewsActivity;
+import nl.frankkie.hwcon2016.activities.QrHuntActivity;
 import nl.frankkie.hwcon2016.R;
-import nl.frankkie.hwcon2016.ScheduleActivity;
+import nl.frankkie.hwcon2016.activities.ScheduleActivity;
 
 /**
  * Created by fbouwens on 10-12-14.

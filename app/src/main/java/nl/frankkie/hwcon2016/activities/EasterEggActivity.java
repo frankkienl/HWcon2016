@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
+
+import nl.frankkie.hwcon2016.R;
 
 /**
  * Created by FrankkieNL on 14-1-2015.

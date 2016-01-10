@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -30,14 +30,18 @@ import android.widget.TextView;
 import com.google.android.gms.games.Games;
 import com.koushikdutta.ion.Ion;
 
+import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.activities.EventDetailActivity;
+import nl.frankkie.hwcon2016.activities.EventListActivity;
+import nl.frankkie.hwcon2016.activities.ScheduleActivity;
 import nl.frankkie.hwcon2016.data.EventContract;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
 import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * A fragment representing a single Event detail screen.
- * This fragment is either contained in a {@link nl.frankkie.hwcon2016.EventListActivity} or {@link nl.frankkie.hwcon2016.ScheduleActivity}
- * in two-pane mode (on tablets) or a {@link nl.frankkie.hwcon2016.EventDetailActivity}
+ * This fragment is either contained in a {@link EventListActivity} or {@link ScheduleActivity}
+ * in two-pane mode (on tablets) or a {@link EventDetailActivity}
  * on handsets.
  */
 public class EventDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

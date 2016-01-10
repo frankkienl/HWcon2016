@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,6 +17,11 @@ import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
+import nl.frankkie.hwcon2016.fragments.EventDetailFragment;
+import nl.frankkie.hwcon2016.fragments.EventListFragment;
+import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
+import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.fragments.ScheduleListFragment;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
 import nl.frankkie.hwcon2016.util.Util;
 

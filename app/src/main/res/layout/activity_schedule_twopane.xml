@@ -19,7 +19,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.frankkie.hwcon2016.ScheduleActivity">
+        tools:context=".activities.ScheduleActivity">
 
         <!-- As the main content view, the view below consumes the entire
              space available using match_parent in both dimensions. -->
@@ -40,7 +40,7 @@
                 android:divider="?android:attr/dividerHorizontal"
                 android:orientation="horizontal"
                 android:showDividers="middle"
-                tools:context=".ScheduleActivity">
+                tools:context=".activities.ScheduleActivity">
 
                 <!--
                 This layout is a two-pane layout for the Events
@@ -56,7 +56,7 @@
 
                 <fragment
                     android:id="@+id/schedule_list"
-                    android:name="nl.frankkie.hwcon2016.ScheduleListFragment"
+                    android:name="nl.frankkie.hwcon2016.fragments.ScheduleListFragment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -82,7 +82,7 @@
              the container. -->
         <fragment
             android:id="@+id/navigation_drawer"
-            android:name="nl.frankkie.hwcon2016.NavigationDrawerFragment"
+            android:name="nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.adapters.ScheduleListAdapter;
 import nl.frankkie.hwcon2016.data.EventContract;
 
 /**

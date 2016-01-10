@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.Util;
 
 

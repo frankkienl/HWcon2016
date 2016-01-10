@@ -6,11 +6,15 @@
     Note about version:
     Change the versionName and versionCode in build.gradle (module: app).
 
+    //todo, sort of important
+    - Fix GCM
+    - Update Barcode Scanner
+    - Android 6.0 Permissions
+
     //todo if time left, probaly not:
     - Add introduction screen
     - Try to reduce APK-size
     - Swipe event for next/previous (like in Feedly)
-    - Add News Screen
     - Use custom view for Map
     - Add Speakers Screen
     - Widget
@@ -22,6 +26,7 @@
     - Watchface?
 
     DONE:
+    - Add News Screen
     - Check for hard-coded Strings in the code, move to resources
     - Add QR Hunt
     - Add accounts, to sync favorites between devices.
@@ -59,7 +64,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="nl.frankkie.hwcon2016.EventListActivity"
+            android:name=".activities.EventListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,51 +72,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="nl.frankkie.hwcon2016.EventDetailActivity"
+            android:name=".activities.EventDetailActivity"
             android:label="@string/title_event_detail"
-            android:parentActivityName="nl.frankkie.hwcon2016.EventListActivity">
+            android:parentActivityName=".activities.EventListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".EventListActivity" />
+                android:value=".activities.EventListActivity" />
         </activity>
 
         <activity
-            android:name="nl.frankkie.hwcon2016.AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"></activity>
         <activity
-            android:name="nl.frankkie.hwcon2016.AboutAppActivity"
+            android:name=".activities.AboutAppActivity"
             android:label="@string/title_activity_about_app"
-            android:parentActivityName="nl.frankkie.hwcon2016.AboutAppActivity">
+            android:parentActivityName=".activities.AboutAppActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".AboutActivity" />            
+                android:value=".activities.AboutActivity" />
         </activity>
-        <activity android:name=".EasterEggActivity"></activity>
+        <activity android:name=".activities.EasterEggActivity"></activity>
         <!--
         Don't reload WebView onConfigChange.
         http://developer.android.com/reference/android/webkit/WebView.html
         http://developer.android.com/guide/topics/resources/runtime-changes.html
         //-->
         <activity
-            android:name="nl.frankkie.hwcon2016.MapActivity"
+            android:name=".activities.MapActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_map"></activity>
         <activity
-            android:name=".ScheduleActivity"
+            android:name=".activities.ScheduleActivity"
             android:label="@string/title_activity_schedule"></activity>
-        
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".QrHuntActivity">
-        <!-- hwcon://qr?key=val
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="hwcon" android:host="qr" />
-            </intent-filter>
-        //-->
+
+        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.QrHuntActivity">
+            <!-- hwcon://qr?key=val
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                    <data android:scheme="hwcon" android:host="qr" />
+                </intent-filter>
+            //-->
         </activity>
-        <activity android:name=".NewsActivity" />
+        <activity android:name=".activities.NewsActivity" />
 
         <provider
             android:name="nl.frankkie.hwcon2016.data.EventProvider"
@@ -158,15 +163,33 @@
             android:value="@string/google_play_games_app_id" />
 
         <!-- GCM //-->
+        <!--
+        Server API Key AIzaSyB8bmqvEzxtgTFt-SOGsAv3NDaqk8BbmcU
+        Sender ID 935982150118
+        //-->
         <receiver
-            android:name=".GcmBroadcastReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="nl.frankkie.hwcon2016" />
             </intent-filter>
         </receiver>
-        <service android:name=".GcmIntentService" />
+        <service
+            android:name="nl.frankkie.hwcon2016.MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="nl.frankkie.hwcon2016.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

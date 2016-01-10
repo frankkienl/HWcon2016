@@ -19,7 +19,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="nl.frankkie.hwcon2016.LoginActivity">
+        tools:context=".activities.LoginActivity">
         <!-- As the main content view, the view below consumes the entire
                  space available using match_parent in both dimensions. -->
         <FrameLayout
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-            tools:context="nl.frankkie.hwcon2016.LoginActivity">
+            tools:context=".activities.LoginActivity">
             
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
              the container. -->
         <fragment
             android:id="@+id/navigation_drawer"
-            android:name="nl.frankkie.hwcon2016.NavigationDrawerFragment"
+            android:name="nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

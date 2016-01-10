@@ -1,4 +1,4 @@
-package nl.frankkie.hwcon2016;
+package nl.frankkie.hwcon2016.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import nl.frankkie.hwcon2016.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
