@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import nl.frankkie.hwcon2016.data.EventContract;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * Created by FrankkieNL on 1-1-2016.
  */
-public class NewsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class NewsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     /*
     Show list of News articles
@@ -30,6 +33,7 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
     int NEWS_LOADER = 0;
     private NewsListAdapter mNewsListAdapter;
     private ListView mListView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static final int COL_ID = 0;
     public static final int COL_TITLE = 1;
@@ -42,6 +46,8 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
             EventContract.NewsEntry.COLUMN_NAME_IMAGE,
             EventContract.NewsEntry.COLUMN_NAME_URL
     };
+
+    Handler handler = new Handler();
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -90,11 +96,26 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                     }
                 }
         );
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(NEWS_LOADER, null, this);
+    }
+
+    @Override
+    public void onRefresh() {
+        Util.syncConventionData(getActivity());
+        //I have no callback when the Sync is done, so just remove after 2 seconds..
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 }
