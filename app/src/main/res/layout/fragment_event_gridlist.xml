@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/event_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnWidth="120dp"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp" />
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/event_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnWidth="120dp"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="10dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/event_list_empty"
         style="@style/textStyle_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:text="@string/browse_empty"
         android:visibility="gone" />
-</LinearLayout>
+</RelativeLayout>

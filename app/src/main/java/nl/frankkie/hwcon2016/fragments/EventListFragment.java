@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.GridView;
 import nl.frankkie.hwcon2016.adapters.EventAdapter;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * A list fragment representing a list of Events. This fragment
@@ -28,11 +31,13 @@ import nl.frankkie.hwcon2016.data.EventContract;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class EventListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EventListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     EventAdapter mEventAdapter;
     int EVENT_LOADER = 0;
     GridView mGridView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    Handler handler = new Handler();
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -81,6 +86,18 @@ public class EventListFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mEventAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        Util.syncConventionData(getActivity());
+        //I have no callback when the Sync is done, so just remove after 2 seconds..
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 
     /**
@@ -140,6 +157,9 @@ public class EventListFragment extends Fragment implements LoaderManager.LoaderC
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
