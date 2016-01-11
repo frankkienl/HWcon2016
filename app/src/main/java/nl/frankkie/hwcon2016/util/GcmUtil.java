@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -58,16 +59,6 @@ public class GcmUtil {
             Log.e(context.getString(R.string.app_name), "gcm not in SharedPreferences");
         }
         return regId;
-    }
-
-    public static void gcmRegister(Context context) {
-        GcmRegisterTask task = new GcmRegisterTask(context);
-        task.execute();
-    }
-
-    public static void gcmUnregister(Context context) {
-        GcmUnregisterTask task = new GcmUnregisterTask(context);
-        task.execute();
     }
 
     /**
@@ -254,12 +245,12 @@ public class GcmUtil {
         }
     }
 
-    public static void gcmHandleMessage(Context context, Intent intent) {
-        String action = intent.getStringExtra("action");
+    public static void gcmHandleMessage(Context context, Bundle data) {
+        String action = data.getString("action");
         if ("downloadConventionData".equals(action)) {
             Util.syncConventionData(context);
         } else if ("notification".equals(action)) {
-            String message = intent.getStringExtra("message");
+            String message = data.getString("message");
             Util.showNotification(context, message);
         } else if ("downloadFavorites".equals(action)) {
             Util.syncData(context, Util.SYNCFLAG_DOWNLOAD_FAVORITES);
@@ -274,60 +265,4 @@ public class GcmUtil {
         }
     }
 
-    public static class GcmRegisterTask extends AsyncTask<Void, Void, Void> {
-
-        Context context;
-
-        public GcmRegisterTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-//            String regId;
-//            try {
-//                GoogleCloudMessaging gcm;
-//                gcm = GoogleCloudMessaging.getInstance(context);
-//                regId = gcm.register(GCM_PROJECT_ID);
-//                gcmSendRegIdToServer(context, regId);
-//                gcmSetRegId(context, regId);
-//            } catch (IOException ioe) {
-//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
-//                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "", "", ioe);
-//                ioe.printStackTrace();
-//            } catch (PackageManager.NameNotFoundException e) {
-//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM, packagename not found\n" + e);
-//                Util.sendACRAReport("GcmUtil.GcmRegisterTask.doInBackground", "Error, cannot register for GCM, packagename not found", "", e);
-//                e.printStackTrace();
-//            }
-            return null;
-        }
-    }
-
-    public static class GcmUnregisterTask extends AsyncTask<Void, Void, Void> {
-
-        Context context;
-
-        public GcmUnregisterTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-//            String regId;
-//            try {
-//                GoogleCloudMessaging gcm;
-//                gcm = GoogleCloudMessaging.getInstance(context);
-//                gcm.unregister();
-//                regId = gcmGetRegId(context);
-//                gcmSendUnregisterToServer(context, regId);
-//                gcmSetRegId(context, ""); //empty
-//            } catch (IOException ioe) {
-//                Log.e(context.getString(R.string.app_name), "Error, cannot register for GCM\n" + ioe);
-//                Util.sendACRAReport("GcmUtil.GcmUnregisterTask.doInBackground", "Error, cannot register for GCM", "", ioe);
-//                ioe.printStackTrace();
-//            }
-            return null;
-        }
-    }
-}
+   }

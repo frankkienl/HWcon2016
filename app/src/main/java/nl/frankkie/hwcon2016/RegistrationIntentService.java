@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -18,7 +19,9 @@ import nl.frankkie.hwcon2016.util.Util;
  */
 public class RegistrationIntentService extends IntentService {
 
+    public static final String[] TOPICS = {"global"};
     private static final String TAG = "RegIntentService";
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -26,6 +29,10 @@ public class RegistrationIntentService extends IntentService {
      */
     public RegistrationIntentService(String name) {
         super(name);
+    }
+
+    public RegistrationIntentService(){
+        super("RegistrationIntentService");
     }
 
     @Override
@@ -37,13 +44,27 @@ public class RegistrationIntentService extends IntentService {
 
             Log.i(TAG, "GCM Registration Token: " + token);
 
-            GcmUtil.gcmSendRegIdToServer(this,token);
+            GcmUtil.gcmSendRegIdToServer(this, token);
+
+            subscribeTopics(token);
         } catch (IOException e) {
             Util.sendACRAReport("MyInstanceIDListenerService.onHandleIntent", e.toString(), e.getMessage(), e);
             e.printStackTrace();
         } catch (PackageManager.NameNotFoundException e) {
             Util.sendACRAReport("MyInstanceIDListenerService.onHandleIntent", e.toString(), e.getMessage(), e);
             e.printStackTrace();
+        }
+
+    }
+
+    public void subscribeTopics(String token) {
+        try {
+            GcmPubSub pubSub = GcmPubSub.getInstance(this);
+            for (String topic : TOPICS) {
+                pubSub.subscribe(token, "/topics/" + topic, null);
+            }
+        } catch (IOException e) {
+            Util.sendACRAReport("RegistrationIntentService.subscribeTopics", e.toString(), e.getMessage(), e);
         }
 
     }

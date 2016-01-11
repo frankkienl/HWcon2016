@@ -19,6 +19,7 @@ import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
+import nl.frankkie.hwcon2016.RegistrationIntentService;
 import nl.frankkie.hwcon2016.fragments.EventDetailFragment;
 import nl.frankkie.hwcon2016.fragments.EventListFragment;
 import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
@@ -279,13 +280,8 @@ public class EventListActivity extends AppCompatActivity implements
             }
         } else {
             //GCM is available!!
-            String regId = GcmUtil.gcmGetRegId(this);
-            //not using String.isEmpty, as this might not work on some older Android versions.
-            //not sure from which version isEmpty is supported, not taking any chances here.
-            if (regId == null || "".equals(regId)) {
-                //not registered yet
-                GcmUtil.gcmRegister(this);
-            }
+            Intent i = new Intent(this, RegistrationIntentService.class);
+            startService(i);
         }
     }
 }

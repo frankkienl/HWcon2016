@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import nl.frankkie.hwcon2016.util.GcmUtil;
+
 /**
  * Created by FrankkieNL on 1/10/2016.
  */
@@ -23,6 +25,8 @@ public class MyGcmListenerService extends GcmListenerService {
         String message = data.getString("message");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
+
+        GcmUtil.gcmHandleMessage(this,data);
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
