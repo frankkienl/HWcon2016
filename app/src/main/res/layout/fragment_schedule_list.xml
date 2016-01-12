@@ -15,6 +15,7 @@
         android:visibility="gone"
         android:text="@string/schedule_empty"
         android:id="@android:id/empty"
+        android:layout_margin="16dp"
         style="@style/textStyle_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

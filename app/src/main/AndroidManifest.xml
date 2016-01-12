@@ -106,8 +106,12 @@
             android:name=".activities.ScheduleActivity"
             android:label="@string/title_activity_schedule"></activity>
 
-        <activity android:name=".activities.LoginActivity"></activity>
-        <activity android:name=".activities.QrHuntActivity">
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/title_section_login"></activity>
+        <activity
+            android:name=".activities.QrHuntActivity"
+            android:label="@string/title_section_qr_hunt">
             <!-- hwcon://qr?key=val
                 <intent-filter>
                     <action android:name="android.intent.action.VIEW" />
@@ -117,7 +121,9 @@
                 </intent-filter>
             //-->
         </activity>
-        <activity android:name=".activities.NewsActivity" />
+        <activity
+            android:name=".activities.NewsActivity"
+            android:label="@string/title_section_news" />
 
         <provider
             android:name="nl.frankkie.hwcon2016.data.EventProvider"
@@ -177,9 +183,10 @@
                 <category android:name="nl.frankkie.hwcon2016" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="nl.frankkie.hwcon2016.MyGcmListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -193,8 +200,7 @@
         </service>
         <service
             android:name="nl.frankkie.hwcon2016.RegistrationIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
     </application>
 
 </manifest>
