@@ -78,4 +78,7 @@
     <string name="title_section_news">Nieuws</string>
     <string name="news_empty_placeholders">Geen nieuwsartikelen gevonden.</string>
     <string name="news_empty_placeholder">Geen nieuwsberichten gevonden.</string>
+    <string name="about_venue_location">Over Venue Lokatie</string>
+    <string name="about_venue_location_view_googlemaps">View in Google Maps</string>
+    <string name="about_venue_location_title">Venue Location</string>
 </resources>

@@ -94,5 +94,8 @@
     <string name="title_section_news">News</string>
     <string name="news_empty_placeholders">No newsarticles found.</string>
     <string name="news_empty_placeholder">No newsarticles found.</string>
+    <string name="about_venue_location">About Venue Location</string>
+    <string name="about_venue_location_view_googlemaps">View in Google Maps</string>
+    <string name="about_venue_location_title">Venue Location</string>
 
 </resources>

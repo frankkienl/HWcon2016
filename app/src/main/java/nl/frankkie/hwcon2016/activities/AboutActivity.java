@@ -104,17 +104,9 @@ public class AboutActivity extends AppCompatActivity implements NavigationDrawer
         btnViewMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                //i.setData(Uri.parse("https://www.google.nl/maps?t=m&z=15&cid=11779929733433826402"));
-                //i.setData(Uri.parse("geo:52.3118607,4.6636143"));
-                //i.setData(Uri.parse("geo:0,0?q=52.3118607,4.6636143(Venue)"));
-                i.setData(Uri.parse("geo:0,0?q=IJweg%201094%202133%20MH%20Hoofddorp"));
-                try {
-                    startActivity(i);
-                } catch (ActivityNotFoundException anfe) {
-                    //This happens on the emulator, when google maps is not installed
-                    Toast.makeText(AboutActivity.this, R.string.about_map_app_not_found, Toast.LENGTH_LONG).show();
-                }
+                Intent i = new Intent();
+                i.setClass(AboutActivity.this, AboutVenueLocationActivity.class);
+                startActivity(i);
             }
         });
         Button btnAboutApp = (Button) findViewById(R.id.about_btn_aboutapp);

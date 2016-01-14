@@ -52,6 +52,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <permission
         android:name="nl.frankkie.hwcon2016.permission.C2D_MESSAGE"
@@ -89,6 +90,13 @@
             android:name=".activities.AboutAppActivity"
             android:label="@string/title_activity_about_app"
             android:parentActivityName=".activities.AboutAppActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AboutActivity" />
+        </activity>
+        <activity
+            android:name=".activities.AboutVenueLocationActivity"
+            android:label="@string/about_venue_location">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.AboutActivity" />
