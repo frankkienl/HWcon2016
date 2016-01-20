@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import nl.frankkie.hwcon2016.R;
 
@@ -18,7 +19,7 @@ import nl.frankkie.hwcon2016.R;
  */
 public class SplashActivity extends AppCompatActivity {
 
-    int delay = 2 * 1000; /* 2 seconds */
+    int delay = 3 * 1000; /* 3 seconds */
     Handler handler = new Handler();
 
     /*
@@ -26,6 +27,13 @@ public class SplashActivity extends AppCompatActivity {
      * if you press back in the splashscreen. Because that would be weird.
      */
     boolean killSwitch = false;
+
+    Runnable runGoToMain = new Runnable() {
+        @Override
+        public void run() {
+            goToMain();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +48,7 @@ public class SplashActivity extends AppCompatActivity {
 
         initUI();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                goToMain();
-            }
-        }, delay);
+        handler.postDelayed(runGoToMain, delay);
     }
 
     public boolean shouldShowSplash() {
@@ -67,8 +70,26 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    public void initUI(){
+    public void initUI() {
         setContentView(R.layout.activity_splash);
+
+        //If the user presses the logo,
+        //go to main directly. No more delay
+        View v = findViewById(R.id.splash_logo);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                killSwitch = false;
+                goToMain();
+
+                //remove callback from handler
+                //no need to run as we already did.
+                handler.removeCallbacks(runGoToMain);
+                //it does acutally does not matter that much
+                //as the killswitch would have been true anyway
+                //( killswitch gets set to true in goToMain )
+            }
+        });
     }
 
     @Override
