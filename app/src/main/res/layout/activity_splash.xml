@@ -10,23 +10,29 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/hwcon_banner"
         android:adjustViewBounds="true"
+        android:id="@+id/splash_header"
         />
 
-    <ImageView
-        android:id="@+id/splash_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_launcher_web" />
-
     <TextView
+        android:id="@+id/splash_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:textSize="46dp"
         android:textColor="#454545"
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:text="HWcon 2016" />
+
+    <ImageView
+        android:id="@+id/splash_logo"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:layout_above="@id/splash_title"
+        android:layout_below="@id/splash_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_launcher_web" />
 
 </RelativeLayout>
