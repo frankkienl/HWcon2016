@@ -18,6 +18,7 @@ import nl.frankkie.hwcon2016.R;
  */
 public class SplashActivity extends AppCompatActivity {
 
+    int delay = 2 * 1000; /* 2 seconds */
     Handler handler = new Handler();
 
     /*
@@ -44,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 goToMain();
             }
-        }, 1000 /* 1 second */);
+        }, delay);
     }
 
     public boolean shouldShowSplash() {

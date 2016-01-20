@@ -36,4 +36,12 @@
     <style name="textStyle_speakername">
         <item name="android:textSize">26sp</item>
     </style>
+
+    <!-- Background for Splashscreen -->
+    <!-- http://stackoverflow.com/questions/2706913/how-to-make-android-apps-background-image-repeat -->
+    <style name="splashscreen_background" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_tiled_background</item>
+    </style>
+
+
 </resources>
