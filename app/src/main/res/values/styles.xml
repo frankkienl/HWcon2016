@@ -42,6 +42,9 @@
     <style name="splashscreen_background" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_tiled_background</item>
     </style>
+    <style name="splashscreen_background_light" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_tiled_background_light</item>
+    </style>
 
 
 </resources>

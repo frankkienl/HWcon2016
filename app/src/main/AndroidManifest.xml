@@ -67,7 +67,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:theme="@style/splashscreen_background"
+            android:theme="@style/splashscreen_background_light"
             android:name=".activities.SplashActivity"
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name">

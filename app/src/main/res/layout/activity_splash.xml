@@ -13,6 +13,7 @@
         android:id="@+id/splash_header"
         />
 
+
     <TextView
         android:id="@+id/splash_title"
         android:layout_width="fill_parent"
@@ -33,6 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
         android:src="@drawable/ic_launcher_web" />
 
 </RelativeLayout>
