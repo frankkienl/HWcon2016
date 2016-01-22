@@ -112,6 +112,8 @@ public class AboutAppActivity extends AppCompatActivity {
         });
         //maybe implement this: (when I have time left)
         //http://stackoverflow.com/questions/7557265/prevent-dialog-dismissal-on-screen-rotation-in-android
+        //or even better
+        //https://www.bignerdranch.com/blog/open-source-licenses-and-android/
         b.create().show();
     }
 
