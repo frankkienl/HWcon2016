@@ -82,4 +82,5 @@
     <string name="about_venue_location_view_googlemaps">View in Google Maps</string>
     <string name="about_venue_location_title">Venue Location</string>
     <string name="about_changedicon">App icon aangepast</string>
+    <string name="aboutapp_viewlicences">Bekijk licenties</string>
 </resources>
