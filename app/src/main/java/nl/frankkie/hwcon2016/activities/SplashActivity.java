@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 
 import nl.frankkie.hwcon2016.R;
 
@@ -75,7 +76,8 @@ public class SplashActivity extends AppCompatActivity {
 
         //If the user presses the logo,
         //go to main directly. No more delay
-        View v = findViewById(R.id.splash_logo);
+        ImageView v = (ImageView) findViewById(R.id.splash_logo);
+        v.setImageResource(getIconResourceId());
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +92,10 @@ public class SplashActivity extends AppCompatActivity {
                 //( killswitch gets set to true in goToMain )
             }
         });
+    }
+
+    public int getIconResourceId(){
+        return R.drawable.ic_launcher_hwcon2016_2_web;
     }
 
     @Override

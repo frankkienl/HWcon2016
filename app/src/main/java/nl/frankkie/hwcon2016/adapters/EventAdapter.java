@@ -42,7 +42,7 @@ public class EventAdapter extends CursorAdapter {
         String time = cursor.getString(EventListFragment.COL_TIME);
         viewHolder.timeView.setText(Util.getDataTimeString(time));
         //TODO: dynamic image
-        //viewHolder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
+        //viewHolder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher_hwcon2016_1));
         //Set color
         //Dear Android, make up your mind!
         /* src: http://developer.android.com/reference/android/view/View.html#setBackgroundDrawable(Drawable background)

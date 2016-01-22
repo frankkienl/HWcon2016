@@ -41,8 +41,8 @@ public class NewsListAdapter extends CursorAdapter {
         viewHolder.mTitle.setText(title);
         Ion.with(context).load(imageStr)
                 .withBitmap()
-                .error(R.mipmap.ic_launcher)
-                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher_hwcon2016_1)
+                .placeholder(R.mipmap.ic_launcher_hwcon2016_1)
                 .intoImageView(viewHolder.mImage);
     }
 
