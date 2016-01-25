@@ -6,10 +6,15 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.acra.ACRA;
 import org.json.JSONArray;
@@ -18,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
 import nl.frankkie.hwcon2016.util.GcmUtil;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
@@ -119,7 +125,7 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                     do {
                         JSONObject qrfound = new JSONObject();
                         qrfound.put("qr_id", cursor.getString(0));
-                        long unixTimestamp = Long.parseLong(cursor.getString(1));                         
+                        long unixTimestamp = Long.parseLong(cursor.getString(1));
                         qrfound.put("found_time", unixTimestamp);
                         qrsfound.put(qrfound);
                     } while (cursor.moveToNext());
@@ -128,7 +134,7 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                     JSONObject device = new JSONObject();
                     device.put("regId", GcmUtil.gcmGetRegId(getContext()));
                     device.put("username", GoogleApiUtil.getUserEmail(getContext()));
-                    device.put("nickname", GoogleApiUtil.getUserNickname(getContext()));                            
+                    device.put("nickname", GoogleApiUtil.getUserNickname(getContext()));
                     root.put("device", device);
                     JSONObject wrapper = new JSONObject();
                     wrapper.put("data", root);
@@ -273,7 +279,7 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
             //<editor-fold desc="news">
             JSONArray news = data.getJSONArray("news");
             ContentValues[] nCVs = new ContentValues[news.length()];
-            for (int i=0; i<news.length(); i++){
+            for (int i = 0; i < news.length(); i++) {
                 JSONObject n = news.getJSONObject(i);
                 ContentValues ncv = new ContentValues();
                 ncv.put(EventContract.NewsEntry._ID, n.getInt("_id"));
@@ -307,6 +313,70 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                 getContext().getContentResolver().delete(EventContract.QrEntry.CONTENT_URI, null, null);
                 getContext().getContentResolver().bulkInsert(EventContract.QrEntry.CONTENT_URI, qrCVs);
                 getContext().getContentResolver().notifyChange(EventContract.QrEntry.CONTENT_URI, null);
+            }
+            //</editor-fold>
+
+            //<editor-fold desc="app config">
+            //App configuration and version-checking
+            if (data.has("app")) {
+                JSONObject app = data.getJSONObject("app");
+                //this is the versioncode
+                //production, as in Google Play Store
+                int latestProdVersion = app.getInt("latestProdVersion");
+                //beta, as in download apk
+                int latestBetaVersion = app.getInt("latestBetaVersion");
+                //download beat apk from here
+                String latestBetaAPK = app.getString("latestBetaApkUrl");
+
+                try {
+                    PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+
+                    if (latestProdVersion > pInfo.versionCode) {
+                        //update via Google Play Store
+                        Toast.makeText(getContext(), "There is an update available for " + getContext().getString(R.string.app_name) + ".\nUpdate via the Google Play Store", Toast.LENGTH_LONG).show();
+                    }
+
+                    if (latestBetaVersion > pInfo.versionCode) {
+                        //TODO: better management of beta-users.
+                        //only beta-testers should get a notification that there is a new APK
+                        //regular uses should just upgrade via the play store,
+                        //even if that versioncode is lower that the beta versioncode.
+                        boolean isBetaUser = true;
+                        if (isBetaUser) {
+                            Toast.makeText(getContext(), "There is a [BETA] update available for " + getContext().getString(R.string.app_name) + ".\nAsk FrankkieNL for instructions", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    Util.sendACRAReport("ConventionSyncAdapter.parseConventionDataJSON#app", e.toString(), e.getMessage(), e);
+                }
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor prefsEdit = prefs.edit();
+                if (app.has("sections")) {
+                    //check which sections are enabled
+                    JSONObject sections = app.getJSONObject("sections");
+                    prefsEdit.putBoolean("section_schedule_enabled", sections.getBoolean("schedule"));
+                    prefsEdit.putBoolean("section_browse_enabled", sections.getBoolean("browse"));
+                    prefsEdit.putBoolean("section_map_enabled", sections.getBoolean("map"));
+                    prefsEdit.putBoolean("section_qrhunt_enabled", sections.getBoolean("qrhunt"));
+                    prefsEdit.putBoolean("section_login_enabled", sections.getBoolean("login"));
+                    prefsEdit.putBoolean("section_news_enabled", sections.getBoolean("news"));
+                    prefsEdit.putBoolean("section_about_enabled", sections.getBoolean("about"));
+                    prefsEdit.putBoolean("show_splash", sections.getBoolean("splash"));
+                    prefsEdit.putString("section_after_splash", sections.getString("sectionAfterSplash"));
+                } else {
+                    //if no sections part, enable all sections
+                    prefsEdit.putBoolean("section_schedule_enabled", true);
+                    prefsEdit.putBoolean("section_browse_enabled", true);
+                    prefsEdit.putBoolean("section_map_enabled", true);
+                    prefsEdit.putBoolean("section_qrhunt_enabled", true);
+                    prefsEdit.putBoolean("section_login_enabled", true);
+                    prefsEdit.putBoolean("section_news_enabled", true);
+                    prefsEdit.putBoolean("section_about_enabled", true);
+                    prefsEdit.putBoolean("show_splash", true);
+                    prefsEdit.putString("section_after_splash", "browse");
+                }
+                prefsEdit.commit();
             }
             //</editor-fold>
         } catch (JSONException e) {

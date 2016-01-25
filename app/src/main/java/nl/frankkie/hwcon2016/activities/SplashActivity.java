@@ -1,15 +1,29 @@
 package nl.frankkie.hwcon2016.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import org.acra.ACRA;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.RegistrationIntentService;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * http://developer.android.com/guide/components/tasks-and-back-stack.html#Clearing
@@ -49,7 +63,8 @@ public class SplashActivity extends AppCompatActivity {
 
         initUI();
 
-        handler.postDelayed(runGoToMain, delay);
+        //Sync ContentProvider using SyncAdapter
+        Util.syncConventionData(this);
     }
 
     public boolean shouldShowSplash() {
@@ -59,11 +74,17 @@ public class SplashActivity extends AppCompatActivity {
 
     public void goToMain() {
         if (killSwitch) {
+            handler.removeCallbacks(runGoToMain);
             return;
         }
+
         Intent i = new Intent();
-        i.setClass(this, EventListActivity.class);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //which screen to go to
+        String sectionAfterSplash = prefs.getString("section_after_splash", "browse");
+        i.setClass(this, Util.getSectionClass(sectionAfterSplash));
         startActivity(i);
+
         killSwitch = true; //launched main, don't allow to launch again.
 
         //close this one.
@@ -94,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    public int getIconResourceId(){
+    public int getIconResourceId() {
         return R.drawable.ic_launcher_hwcon2016_2_web;
     }
 
@@ -103,12 +124,50 @@ public class SplashActivity extends AppCompatActivity {
         super.onPause();
 
         killSwitch = true;
+        handler.removeCallbacks(runGoToMain);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        //let the user go to next screen, after delay
         killSwitch = false;
+        handler.postDelayed(runGoToMain, delay);
+
+        //Check for Google Play Service
+        int flag = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (flag != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(flag)) {
+                GooglePlayServicesUtil.showErrorNotification(flag, this);
+            } else {
+                //killswitch, we don't want to let the user go to the next screen
+                //if there is no Google Play Services
+                killSwitch = true;
+                Log.e(getString(R.string.app_name), "Google Play Services not supported.");
+                ACRA.getErrorReporter().handleException(new RuntimeException("Google Play Services not supported."));
+                AlertDialog.Builder b = new AlertDialog.Builder(this);
+                b.setMessage("This device is not supported, because it does not have Google Play Services.");
+                b.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //close app, when ok is pressed
+                        finish();
+                    }
+                });
+                b.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        //close app, when dialog is canceled
+                        finish();
+                    }
+                });
+                b.create().show();
+            }
+        } else {
+            //GCM is available!!
+            Intent i = new Intent(this, RegistrationIntentService.class);
+            startService(i);
+        }
     }
 }

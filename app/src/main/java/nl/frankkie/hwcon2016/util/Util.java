@@ -30,6 +30,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import nl.frankkie.hwcon2016.activities.AboutActivity;
 import nl.frankkie.hwcon2016.activities.EventListActivity;
@@ -49,6 +51,21 @@ public class Util {
     public static final String DATE_FORMAT = "E, HH:mm"; //example: Sunday, 16:30
     public static SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT);
     public static SimpleDateFormat mysqlDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+
+    public static Map<String, Class<?extends Activity>> sectionsToClass = new HashMap<String, Class<? extends Activity>>();
+    static {
+        sectionsToClass.put("browse",EventListActivity.class);
+        sectionsToClass.put("schedule", ScheduleActivity.class);
+        sectionsToClass.put("map", MapActivity.class);
+        sectionsToClass.put("qrhunt", QrHuntActivity.class);
+        sectionsToClass.put("login", LoginActivity.class);
+        sectionsToClass.put("news", NewsActivity.class);
+        sectionsToClass.put("about", AboutActivity.class);
+    }
+
+    public static Class<?extends Activity> getSectionClass(String sectionName){
+        return sectionsToClass.get(sectionName);
+    }
 
     public static String getDataTimeString(String timeStringFromDatabase) {
         //Parse MySQL DateType format.

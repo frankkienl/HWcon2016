@@ -218,8 +218,6 @@ public class EventListActivity extends AppCompatActivity implements
                     .findFragmentById(R.id.event_list))
                     .setActivateOnItemClick(true);
         }
-        //Sync ContentProvider using SyncAdapter
-        Util.syncConventionData(this);
 
         initGoogleApi();
     }
@@ -269,19 +267,5 @@ public class EventListActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        //Check for Google Play Service
-        int flag = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (flag != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(flag)) {
-                GooglePlayServicesUtil.showErrorNotification(flag, this);
-            } else {
-                Log.e(getString(R.string.app_name), "Google Play Services not supported.");
-                ACRA.getErrorReporter().handleException(new RuntimeException("Google Play Services not supported."));
-            }
-        } else {
-            //GCM is available!!
-            Intent i = new Intent(this, RegistrationIntentService.class);
-            startService(i);
-        }
     }
 }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- http://android-developers.blogspot.nl/2015/05/android-design-support-library.html //-->
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navigation_item_1"
             android:checked="true"
-            android:icon="@drawable/ic_android"
-            android:title="@string/navigation_item_1" />
+            android:icon="@drawable/ic_launcher_hwcon2016_1_web"
+            android:title="@string/title_section_schedule" />
         <item
             android:id="@+id/navigation_item_2"
-            android:icon="@drawable/ic_android"
-            android:title="@string/navigation_item_2" />
+            android:icon="@drawable/ic_launcher_hwcon2016_1_web"
+            android:title="@string/title_section_browse" />
     </group>
 </menu>
