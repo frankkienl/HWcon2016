@@ -1,6 +1,7 @@
 package nl.frankkie.hwcon2016.sync;
 
 import android.accounts.Account;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -11,8 +12,11 @@ import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -326,14 +330,24 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                 //beta, as in download apk
                 int latestBetaVersion = app.getInt("latestBetaVersion");
                 //download beat apk from here
-                String latestBetaAPK = app.getString("latestBetaApkUrl");
+                String latestBetaApkUrl = app.getString("latestBetaApkUrl");
 
                 try {
                     PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
 
                     if (latestProdVersion > pInfo.versionCode) {
                         //update via Google Play Store
-                        Toast.makeText(getContext(), "There is an update available for " + getContext().getString(R.string.app_name) + ".\nUpdate via the Google Play Store", Toast.LENGTH_LONG).show();
+                        NotificationCompat.Builder b = new NotificationCompat.Builder(getContext());
+                        b.setSmallIcon(R.drawable.ic_stat_notification_heart);
+                        b.setContentTitle("Update available");
+                        b.setContentText("Please update " + getContext().getString(R.string.app_name) + " via the Google Play Store");
+                        b.setAutoCancel(true);
+                        Intent playStoreIntent = new Intent();
+                        playStoreIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getContext().getPackageName()));
+                        PendingIntent pi = PendingIntent.getActivity(getContext(), 0, playStoreIntent, 0);
+                        b.setContentIntent(pi);
+                        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
+                        notificationManagerCompat.notify(0, b.build());
                     }
 
                     if (latestBetaVersion > pInfo.versionCode) {
@@ -343,7 +357,17 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                         //even if that versioncode is lower that the beta versioncode.
                         boolean isBetaUser = true;
                         if (isBetaUser) {
-                            Toast.makeText(getContext(), "There is a [BETA] update available for " + getContext().getString(R.string.app_name) + ".\nAsk FrankkieNL for instructions", Toast.LENGTH_LONG).show();
+                            NotificationCompat.Builder b = new NotificationCompat.Builder(getContext());
+                            b.setSmallIcon(R.drawable.ic_stat_notification_heart);
+                            b.setContentTitle("Update available [BETA]");
+                            b.setContentText("Please update " + getContext().getString(R.string.app_name) + " [BETA]");
+                            b.setAutoCancel(true);
+                            Intent playStoreIntent = new Intent();
+                            playStoreIntent.setData(Uri.parse(latestBetaApkUrl));
+                            PendingIntent pi = PendingIntent.getActivity(getContext(), 0, playStoreIntent, 0);
+                            b.setContentIntent(pi);
+                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
+                            notificationManagerCompat.notify(0, b.build());
                         }
                     }
                 } catch (Exception e) {
