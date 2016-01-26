@@ -64,7 +64,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_hwcon2016_2"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.TransparentStatus">
 
         <!-- Multiple Splashscreen for multiple icons //-->
         <activity
@@ -103,6 +103,7 @@
         <activity
             android:name=".activities.EventDetailActivity"
             android:label="@string/title_event_detail"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activities.EventListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -112,11 +113,11 @@
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.TransparentStatus"
             ></activity>
         <activity
             android:name=".activities.AboutAppActivity"
             android:label="@string/title_activity_about_app"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activities.AboutAppActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -124,6 +125,7 @@
         </activity>
         <activity
             android:name=".activities.AboutVenueLocationActivity"
+            android:theme="@style/AppTheme"
             android:label="@string/about_venue_location">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -137,6 +139,7 @@
         //-->
         <activity
             android:name=".activities.MapActivity"
+            android:theme="@style/AppTheme"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_map"></activity>
         <activity
