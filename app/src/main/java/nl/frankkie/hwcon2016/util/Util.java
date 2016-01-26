@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.frankkie.hwcon2016.activities.About2Activity;
 import nl.frankkie.hwcon2016.activities.AboutActivity;
 import nl.frankkie.hwcon2016.activities.EventListActivity;
 import nl.frankkie.hwcon2016.activities.LoginActivity;

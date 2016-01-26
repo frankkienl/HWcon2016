@@ -113,6 +113,11 @@
             android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"></activity>
         <activity
+            android:name=".activities.About2Activity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.TransparentStatus"
+            ></activity>
+        <activity
             android:name=".activities.AboutAppActivity"
             android:label="@string/title_activity_about_app"
             android:parentActivityName=".activities.AboutAppActivity">

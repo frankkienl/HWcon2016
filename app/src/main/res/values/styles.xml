@@ -16,6 +16,16 @@
         <item name="colorAccent">@color/actionbar_background</item>
     </style>
 
+    <style name="AppTheme.TransparentStatus" parent="AppTheme">
+        <!--
+        http://stackoverflow.com/questions/26440879/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st
+        make the navigation bar draw under the statusbar
+        //-->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
     </style>
