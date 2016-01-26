@@ -7,12 +7,18 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.acra.ACRA;
 
@@ -33,14 +39,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.frankkie.hwcon2016.activities.About2Activity;
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.activities.AboutActivity;
 import nl.frankkie.hwcon2016.activities.EventListActivity;
 import nl.frankkie.hwcon2016.activities.LoginActivity;
 import nl.frankkie.hwcon2016.activities.MapActivity;
 import nl.frankkie.hwcon2016.activities.NewsActivity;
 import nl.frankkie.hwcon2016.activities.QrHuntActivity;
-import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.activities.ScheduleActivity;
 
 /**
@@ -53,9 +58,10 @@ public class Util {
     public static SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT);
     public static SimpleDateFormat mysqlDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 
-    public static Map<String, Class<?extends Activity>> sectionsToClass = new HashMap<String, Class<? extends Activity>>();
+    public static Map<String, Class<? extends Activity>> sectionsToClass = new HashMap<String, Class<? extends Activity>>();
+
     static {
-        sectionsToClass.put("browse",EventListActivity.class);
+        sectionsToClass.put("browse", EventListActivity.class);
         sectionsToClass.put("schedule", ScheduleActivity.class);
         sectionsToClass.put("map", MapActivity.class);
         sectionsToClass.put("qrhunt", QrHuntActivity.class);
@@ -64,8 +70,25 @@ public class Util {
         sectionsToClass.put("about", AboutActivity.class);
     }
 
-    public static Class<?extends Activity> getSectionClass(String sectionName){
+
+    public static Class<? extends Activity> getSectionClass(String sectionName) {
         return sectionsToClass.get(sectionName);
+    }
+
+    public static Map<Integer, Class<? extends Activity>> sectionsIdToClass = new HashMap<Integer, Class<? extends Activity>>();
+
+    static {
+        sectionsIdToClass.put(R.id.navigation_item_schedule, ScheduleActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_browse, EventListActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_map, MapActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_qrhunt, QrHuntActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_login, LoginActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_news, NewsActivity.class);
+        sectionsIdToClass.put(R.id.navigation_item_about, AboutActivity.class);
+    }
+
+    public static Class<? extends Activity> getSectionIdClass(int sectionId) {
+        return sectionsIdToClass.get(sectionId);
     }
 
     public static String getDataTimeString(String timeStringFromDatabase) {
@@ -128,7 +151,7 @@ public class Util {
             }
             case 5: {
                 if (!(thisAct instanceof AboutActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, About2Activity.class));
+                    navigateFromNavDrawer(thisAct, new Intent(thisAct, AboutActivity.class));
                 break;
             }
             case 6: {
@@ -408,5 +431,66 @@ public class Util {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    public static void fixNavigationView(Activity context, NavigationView navigationView) {
+        //remove items that are hidden by SharedPreferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Menu navigationMenu = navigationView.getMenu();
+        if (!prefs.getBoolean("section_schedule_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_schedule);
+        }
+        if (!prefs.getBoolean("section_browse_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_browse);
+        }
+        if (!prefs.getBoolean("section_map_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_map);
+        }
+        if (!prefs.getBoolean("section_qrhunt_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_qrhunt);
+        }
+        if (!prefs.getBoolean("section_login_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_login);
+        }
+        if (!prefs.getBoolean("section_about_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_about);
+        }
+        if (!prefs.getBoolean("section_news_enabled", true)) {
+            navigationMenu.removeItem(R.id.navigation_item_news);
+        }
+
+        //set the current section selected
+        if (context instanceof ScheduleActivity) {
+            navigationMenu.findItem(R.id.navigation_item_schedule).setChecked(true);
+        }
+        if (context instanceof EventListActivity) {
+            navigationMenu.findItem(R.id.navigation_item_browse).setChecked(true);
+        }
+        if (context instanceof MapActivity) {
+            navigationMenu.findItem(R.id.navigation_item_map).setChecked(true);
+        }
+        if (context instanceof QrHuntActivity) {
+            navigationMenu.findItem(R.id.navigation_item_qrhunt).setChecked(true);
+        }
+        if (context instanceof LoginActivity) {
+            navigationMenu.findItem(R.id.navigation_item_login).setChecked(true);
+        }
+        if (context instanceof AboutActivity) {
+            navigationMenu.findItem(R.id.navigation_item_about).setChecked(true);
+        }
+        if (context instanceof NewsActivity) {
+            navigationMenu.findItem(R.id.navigation_item_news).setChecked(true);
+        }
+
+    }
+
+    public static void navigationItemSelected(Activity thisAct, NavigationView navigationView, DrawerLayout drawerLayout, MenuItem menuItem) {
+        //http://www.android4devs.com/2015/06/navigation-view-material-design-support.html
+        if (!menuItem.isChecked()) {
+            menuItem.setChecked(true);
+        }
+        Intent i = new Intent();
+        navigateFromNavDrawer(thisAct, i.setClass(thisAct, getSectionIdClass(menuItem.getItemId())));
+        drawerLayout.closeDrawers();
     }
 }

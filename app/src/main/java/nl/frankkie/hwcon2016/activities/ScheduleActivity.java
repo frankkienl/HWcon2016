@@ -1,13 +1,14 @@
 package nl.frankkie.hwcon2016.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -17,10 +18,9 @@ import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
+import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.fragments.EventDetailFragment;
 import nl.frankkie.hwcon2016.fragments.EventListFragment;
-import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
-import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.fragments.ScheduleListFragment;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
 import nl.frankkie.hwcon2016.util.Util;
@@ -52,35 +52,34 @@ public class ScheduleActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiUtil.GiveMeGoogleApiClient,
-        ScheduleListFragment.Callbacks,
-        NavigationDrawerFragment.NavigationDrawerCallbacks {
+        ScheduleListFragment.Callbacks {
 
     //<editor-fold desc="ActionBar Stuff">
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    Activity thisAct = this;
 
     Toolbar mToolbar;
     ActionBarDrawerToggle mDrawerToggle;
 
     public void initToolbar() {
-        mTitle = getTitle();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(mTitle);
+        mToolbar.setTitle(getTitle());
         setSupportActionBar(mToolbar);
         ///
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        // Set up the drawer.
-        mDrawerToggle = mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Util.navigationItemSelected(thisAct, navigationView, drawerLayout, menuItem);
+                return false;
+            }
+        });
+        Util.fixNavigationView(this, navigationView);
+        //
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -101,26 +100,6 @@ public class ScheduleActivity extends AppCompatActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void restoreActionBar() {
-        getSupportActionBar().setTitle(mTitle);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        restoreActionBar();
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * Callback from Hamburger-menu
-     *
-     * @param position
-     */
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        Util.navigateFromNavDrawer(this, position);
     }
     //</editor-fold>
 
@@ -224,7 +203,7 @@ public class ScheduleActivity extends AppCompatActivity implements
         }
 
         initToolbar();
-        
+
         initGoogleApi();
     }
 

@@ -1,56 +1,53 @@
 package nl.frankkie.hwcon2016.activities;
 
-import android.content.ActivityNotFoundException;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.Util;
 
 
-public class AboutActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class AboutActivity extends AppCompatActivity {
 
     //<editor-fold desc="ActionBar Stuff">
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    Activity thisAct = this;
 
     Toolbar mToolbar;
     ActionBarDrawerToggle mDrawerToggle;
 
     public void initToolbar() {
-        mTitle = getTitle();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(mTitle);
+        mToolbar.setTitle(getTitle());
         setSupportActionBar(mToolbar);
         ///
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        // Set up the drawer.
-        mDrawerToggle = mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Util.navigationItemSelected(thisAct, navigationView, drawerLayout, menuItem);
+                return false;
+            }
+        });
+        Util.fixNavigationView(this, navigationView);
+        //
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -72,32 +69,12 @@ public class AboutActivity extends AppCompatActivity implements NavigationDrawer
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void restoreActionBar() {
-        getSupportActionBar().setTitle(mTitle);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        restoreActionBar();
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /**
-     * Callback from Hamburger-menu
-     *
-     * @param position
-     */
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        Util.navigateFromNavDrawer(this, position);
-    }
     //</editor-fold>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_about2);
         initToolbar();
         initUI();
     }
@@ -134,11 +111,11 @@ public class AboutActivity extends AppCompatActivity implements NavigationDrawer
     public void changeAppIcon(boolean showMessage) {
         //http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component
         PackageManager pm = getApplicationContext().getPackageManager();
-        ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016","nl.frankkie.hwcon2016.activities.Splash1Activity");
-        ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016","nl.frankkie.hwcon2016.activities.Splash2Activity");
+        ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash1Activity");
+        ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash2Activity");
         //which one is enabled? (only one of them is enabled, so just check 1, which is disable in manifest(default))
         if (pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-                ||pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ){
+                || pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
             //1 is disabled, so: enable 1, disable 2
             pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
