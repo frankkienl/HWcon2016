@@ -128,7 +128,7 @@ public class Util {
             }
             case 5: {
                 if (!(thisAct instanceof AboutActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, AboutActivity.class));
+                    navigateFromNavDrawer(thisAct, new Intent(thisAct, About2Activity.class));
                 break;
             }
             case 6: {

@@ -11,14 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import nl.frankkie.hwcon2016.R;
-import nl.frankkie.hwcon2016.fragments.NavigationDrawerFragment;
-import nl.frankkie.hwcon2016.util.Util;
 
 
 public class About2Activity extends AppCompatActivity {
@@ -37,9 +34,23 @@ public class About2Activity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         ///
         navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
-        navigationView.inflateMenu(R.menu.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                //http://www.android4devs.com/2015/06/navigation-view-material-design-support.html
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (!menuItem.isChecked()) {
+                    menuItem.setChecked(true);
+                }
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawers();
+                return false;
+            }
+        });
         //
-        mDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,mToolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -103,11 +114,11 @@ public class About2Activity extends AppCompatActivity {
     public void changeAppIcon(boolean showMessage) {
         //http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component
         PackageManager pm = getApplicationContext().getPackageManager();
-        ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016","nl.frankkie.hwcon2016.activities.Splash1Activity");
-        ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016","nl.frankkie.hwcon2016.activities.Splash2Activity");
+        ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash1Activity");
+        ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash2Activity");
         //which one is enabled? (only one of them is enabled, so just check 1, which is disable in manifest(default))
         if (pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-                ||pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ){
+                || pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
             //1 is disabled, so: enable 1, disable 2
             pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
