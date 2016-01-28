@@ -3,9 +3,11 @@ package nl.frankkie.hwcon2016.activities;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
@@ -111,6 +113,8 @@ public class AboutActivity extends AppCompatActivity {
     public void changeAppIcon(boolean showMessage) {
         //http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component
         PackageManager pm = getApplicationContext().getPackageManager();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
         ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash1Activity");
         ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash2Activity");
         //which one is enabled? (only one of them is enabled, so just check 1, which is disable in manifest(default))
@@ -119,12 +123,14 @@ public class AboutActivity extends AppCompatActivity {
             //1 is disabled, so: enable 1, disable 2
             pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            prefsEditor.putInt("app_icon", R.drawable.ic_launcher_hwcon2016_1_web);
         } else {
             //1 is enabled, so: disable 1, enable 2
             pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
             pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            prefsEditor.putInt("app_icon", R.drawable.ic_launcher_hwcon2016_2_web);
         }
-
+        prefsEditor.commit();
         if (!showMessage) {
             return;
         }

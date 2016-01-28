@@ -116,7 +116,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public int getIconResourceId() {
-        return R.drawable.ic_launcher_hwcon2016_2_web;
+        return Util.getAppIconResourceId(this);
     }
 
     @Override

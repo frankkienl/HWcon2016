@@ -99,5 +99,6 @@
     <string name="about_venue_location_title">Venue Location</string>
     <string name="about_changedicon">Changed app icon</string>
     <string name="aboutapp_viewlicences">View Licences</string>
+    <string name="not_logged_in">not logged in</string>
 
 </resources>

@@ -19,6 +19,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.google.zxing.client.android.Intents;
 
 import org.acra.ACRA;
 
@@ -482,6 +485,14 @@ public class Util {
             navigationMenu.findItem(R.id.navigation_item_news).setChecked(true);
         }
 
+        //Set image same as splash / launcher icon
+        //http://stackoverflow.com/questions/33194594/navigationview-get-find-header-layout
+        ((ImageView)navigationView.getHeaderView(0).findViewById(R.id.nav_header_image)).setImageResource(getAppIconResourceId(context));
+    }
+
+    public static int getAppIconResourceId(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt("app_icon", R.drawable.ic_launcher_hwcon2016_2_web);
     }
 
     public static void navigationItemSelected(Activity thisAct, NavigationView navigationView, DrawerLayout drawerLayout, MenuItem menuItem) {
