@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     /*
-     * Implementing killswitch, to make sure you get send to the mainactivity,
+     * Implementing killswitch, to make sure don't you get send to the mainactivity,
      * if you press back in the splashscreen. Because that would be weird.
      */
     boolean killSwitch = false;

@@ -194,7 +194,7 @@ public class QrListFragment extends ListFragment implements LoaderManager.Loader
             }
             //Check 1
             //Does it have the with HWcon uri-scheme
-            if (!qrdata.startsWith("http://wofje.8s.nl/hwcon2016/webapp/qrhunt.php?qr=")){
+            if (!qrdata.startsWith("https://wofje.8s.nl/hwcon2016/webapp/qrhunt.php?qr=")){
                 Log.e("HWcon","QR code does not start with the correct URI-scheme");
                 //Not a QR hunt code, but some other code
                 handler.post(new Runnable() {

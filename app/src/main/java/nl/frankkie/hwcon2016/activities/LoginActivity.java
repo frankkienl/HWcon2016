@@ -373,7 +373,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         @Override
         protected Void doInBackground(Void... params) {
-            String url = "http://wofje.8s.nl/hwcon2016/api/v1/changenickname.php?useremail=" + email + "&regId=" + regId + "&nickname=" + nickname;
+            String url = "https://wofje.8s.nl/hwcon2016/api/v1/changenickname.php?useremail=" + email + "&regId=" + regId + "&nickname=" + nickname;
             url = url.replace(" ","+");
             try {
                 Util.httpDownload(url);
@@ -409,7 +409,7 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected String doInBackground(Void... params) {
             String response = null;
-            String url = "http://wofje.8s.nl/hwcon2016/api/v1/applogin.php?useremail=" + email + "&regId=" + regId + "&gplusname=" + user.getDisplayName();
+            String url = "https://wofje.8s.nl/hwcon2016/api/v1/applogin.php?useremail=" + email + "&regId=" + regId + "&gplusname=" + user.getDisplayName();
             url = url.replace(" ","+");
             try {
                 response = Util.httpDownload(url);

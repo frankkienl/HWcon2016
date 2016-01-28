@@ -4,7 +4,6 @@
     <item
         android:id="@+id/action_star"
         android:title="@string/action_star_add"
-
         app:showAsAction="always"
         />
     <item

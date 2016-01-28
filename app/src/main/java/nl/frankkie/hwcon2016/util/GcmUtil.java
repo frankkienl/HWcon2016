@@ -94,7 +94,7 @@ public class GcmUtil {
         String postData = "regId=" + regId;
         try {
             //For rant, see nl.frankkie.hwcon2016.sync.Util
-            URL url = new URL("http://wofje.8s.nl/hwcon2016/api/v1/gcmunregister.php");
+            URL url = new URL("https://wofje.8s.nl/hwcon2016/api/v1/gcmunregister.php");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             //http://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily
@@ -180,7 +180,7 @@ public class GcmUtil {
         String postData = "regId=" + regId + "&androidVersion=" + Build.VERSION.RELEASE + "&androidVersionInt=" + Build.VERSION.SDK_INT + "&brand=" + Build.BRAND + "&model=" + Build.MODEL + "&locale=" + locale + "&appVersion=" + appVersion;
         try {
             //For rant, see nl.frankkie.hwcon2016.util.Util
-            URL url = new URL("http://wofje.8s.nl/hwcon2016/api/v1/gcmregister.php");
+            URL url = new URL("https://wofje.8s.nl/hwcon2016/api/v1/gcmregister.php");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             //http://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily
