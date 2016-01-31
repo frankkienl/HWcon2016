@@ -18,7 +18,7 @@
     <string name="action_star_add">Add to favorites</string>
     <string name="action_star_remove">Remove from favorites</string>
 
-    <string name="share_text">I\'ll go to the event \'%s\' during HWcon 2015! #hwcon2015</string>
+    <string name="share_text">I\'ll go to the event \'%s\' during HWcon 2016! #hwcon2016</string>
 
     <string name="about_mail_header">Mail</string>
     <string name="about_date_header">Date</string>
@@ -42,7 +42,7 @@
     <string name="about_location_details">Event Center Fokker, IJweg 1094, 2133 MN Hoofddorp, The Netherlands</string>
     <string name="about_mail_details">info@hwcon.nl</string>
     <string name="about_website_details">www.hwcon.nl</string>
-    <string name="about_date_details">February 27-28, 2015</string>
+    <string name="about_date_details">February 27-28, 2016</string>
 
     <string name="map_floor0">Ground floor</string>
     <string name="map_floor1">2nd floor</string>
