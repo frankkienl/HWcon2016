@@ -115,8 +115,8 @@ public class AboutActivity extends AppCompatActivity {
         PackageManager pm = getApplicationContext().getPackageManager();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        ComponentName componentName1 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash1Activity");
-        ComponentName componentName2 = new ComponentName("nl.frankkie.hwcon2016", "nl.frankkie.hwcon2016.activities.Splash2Activity");
+        ComponentName componentName1 = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash1Activity");
+        ComponentName componentName2 = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash2Activity");
         //which one is enabled? (only one of them is enabled, so just check 1, which is disable in manifest(default))
         if (pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
                 || pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
