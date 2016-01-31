@@ -41,7 +41,6 @@
         Change these when using for another convention
     -->
     <string name="app_name">HWcon 2016</string>
-    <string name="about_hwcon_title">Hearth\'s Warming Con</string>
     <string name="about_description">Een My little Pony Conferentie in Nederland voor alle generaties!</string>
     <string name="about_location_details">Event Center Fokker, IJweg 1094, 2133 MN Hoofddorp, Nederland</string>
     <string name="about_mail_details">info@hwcon.nl</string>
@@ -55,7 +54,7 @@
     <string name="aboutapp_frankkienl_description">Deze app is gemaakt door FrankkieNL \nVoor meer apps, zie: \nhttp://frankkie.nl/</string>
     <string name="title_section_qr_hunt">QR Jacht</string>
     <string name="title_section_login">Log in/Log uit</string>
-    <string name="sign_out">Sign out</string>
+    <string name="sign_out">Log uit</string>
     <string name="view_achievements">Bekijk prestaties</string>
     <string name="qrlist_empty_placeholder">QR code lijst is leeg</string>
     <string name="qrlist_empty_names_hidden">Nog geen QR codes gevonden!</string>
@@ -79,9 +78,11 @@
     <string name="news_empty_placeholders">Geen nieuwsartikelen gevonden.</string>
     <string name="news_empty_placeholder">Geen nieuwsberichten gevonden.</string>
     <string name="about_venue_location">Over Venue Lokatie</string>
-    <string name="about_venue_location_view_googlemaps">View in Google Maps</string>
-    <string name="about_venue_location_title">Venue Location</string>
+    <string name="about_venue_location_view_googlemaps">Bekijk in Google Maps</string>
+    <string name="about_venue_location_title">Venue Lokatie</string>
     <string name="about_changedicon">App icon aangepast</string>
     <string name="aboutapp_viewlicences">Bekijk licenties</string>
     <string name="not_logged_in">niet ingelogd</string>
+    <string name="current_lang">NL</string>
+    <string name="about_convention_title">Hearth\'s Warming Con</string>
 </resources>
