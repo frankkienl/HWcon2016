@@ -1,7 +1,10 @@
 package nl.frankkie.hwcon2016.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -104,42 +107,48 @@ public class AboutActivity extends AppCompatActivity {
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                changeAppIcon(true);
+                showChangeIconDialog();
                 return true;
             }
         });
     }
 
-    public void changeAppIcon(boolean showMessage) {
-        //http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component
-        PackageManager pm = getApplicationContext().getPackageManager();
+    public static final int[] ICONS = {R.drawable.ic_launcher_hwcon2016_1_web, R.drawable.ic_launcher_hwcon2016_2_web, R.drawable.ic_launcher_hwcon2016_3_web};
+
+    public void showChangeIconDialog() {
+        String[] iconNames = new String[ICONS.length];
+        for (int i = 0; i < ICONS.length; i++) {
+            iconNames[i] = "Icon " + (i + 1);
+        }
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setItems(iconNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changeAppIcon(which);
+            }
+        });
+        b.create().show();
+    }
+
+    public void changeAppIcon(int choiceIndex) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        ComponentName componentName1 = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash1Activity");
-        ComponentName componentName2 = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash2Activity");
-        //which one is enabled? (only one of them is enabled, so just check 1, which is disable in manifest(default))
-        if (pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
-                || pm.getComponentEnabledSetting(componentName1) == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
-            //1 is disabled, so: enable 1, disable 2
-            pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            prefsEditor.putInt("app_icon", R.drawable.ic_launcher_hwcon2016_1_web);
-        } else {
-            //1 is enabled, so: disable 1, enable 2
-            pm.setComponentEnabledSetting(componentName1, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            pm.setComponentEnabledSetting(componentName2, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            prefsEditor.putInt("app_icon", R.drawable.ic_launcher_hwcon2016_2_web);
-        }
+        prefsEditor.putInt("app_icon", ICONS[choiceIndex]);
         prefsEditor.commit();
-        if (!showMessage) {
-            return;
-        }
-        Snackbar.make(findViewById(R.id.container), R.string.about_changedicon, Snackbar.LENGTH_LONG).setAction(android.R.string.cancel, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeAppIcon(false);
+        //
+        PackageManager pm = getApplicationContext().getPackageManager();
+        for (int i = 0; i < ICONS.length; i++) {
+            ComponentName componentName = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash" + (i + 1) + "Activity");
+            if (i == choiceIndex) {
+                //enable this one
+                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            } else {
+                //disable this one
+                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
             }
-        }).show();
+        }
+        //
+        Snackbar.make(findViewById(R.id.container), R.string.about_changedicon, Snackbar.LENGTH_LONG).show();
     }
 
 }

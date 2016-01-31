@@ -93,6 +93,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.Splash3Activity"
+            android:enabled="false"
+            android:finishOnTaskLaunch="true"
+            android:icon="@mipmap/ic_launcher_hwcon2016_3"
+            android:label="@string/app_name"
+            android:theme="@style/splashscreen_background_light">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- enoof splashscreens //-->
 
         <activity
