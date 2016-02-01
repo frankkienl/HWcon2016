@@ -492,7 +492,8 @@ public class Util {
 
     public static int getAppIconResourceId(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getInt("app_icon", R.drawable.ic_launcher_hwcon2016_2_web);
+        //set default here
+        return prefs.getInt("app_icon", R.drawable.ic_launcher_hwcon2016_4_web);
     }
 
     public static void navigationItemSelected(Activity thisAct, NavigationView navigationView, DrawerLayout drawerLayout, MenuItem menuItem) {

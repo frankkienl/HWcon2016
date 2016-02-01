@@ -67,11 +67,13 @@
         android:theme="@style/AppTheme.TransparentStatus">
 
         <!-- Multiple Splashscreen for multiple icons //-->
+        <!-- default enabled=false, enable dynamically //-->
+        <!-- http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component //-->
         <activity
-            android:name=".activities.Splash2Activity"
+            android:name=".activities.Splash4Activity"
             android:enabled="true"
             android:finishOnTaskLaunch="true"
-            android:icon="@mipmap/ic_launcher_hwcon2016_2"
+            android:icon="@mipmap/ic_launcher_hwcon2016_4"
             android:label="@string/app_name"
             android:theme="@style/splashscreen_background_light">
             <intent-filter>
@@ -79,13 +81,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- default enabled=false, enable dynamically //-->
-        <!-- http://stackoverflow.com/questions/17409907/how-to-enable-and-disable-a-component //-->
         <activity
             android:name=".activities.Splash1Activity"
             android:enabled="false"
             android:finishOnTaskLaunch="true"
             android:icon="@mipmap/ic_launcher_hwcon2016_1"
+            android:label="@string/app_name"
+            android:theme="@style/splashscreen_background_light">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.Splash2Activity"
+            android:enabled="false"
+            android:finishOnTaskLaunch="true"
+            android:icon="@mipmap/ic_launcher_hwcon2016_2"
             android:label="@string/app_name"
             android:theme="@style/splashscreen_background_light">
             <intent-filter>
@@ -105,31 +117,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.Splash4Activity"
-            android:enabled="false"
-            android:finishOnTaskLaunch="true"
-            android:icon="@mipmap/ic_launcher_hwcon2016_4"
-            android:label="@string/app_name"
-            android:theme="@style/splashscreen_background_light">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.Splash5Activity"
-            android:enabled="false"
-            android:finishOnTaskLaunch="true"
-            android:icon="@mipmap/ic_launcher_hwcon2016_5"
-            android:label="@string/app_name"
-            android:theme="@style/splashscreen_background_light">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!-- enoof splashscreens //-->
+        <!-- endof splashscreens //-->
 
         <activity
             android:name=".activities.EventListActivity"
