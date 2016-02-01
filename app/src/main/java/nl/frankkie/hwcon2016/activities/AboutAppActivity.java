@@ -171,7 +171,7 @@ public class AboutAppActivity extends AppCompatActivity implements GoogleApiClie
             StringBuilder total = new StringBuilder();
             String line;
             while ((line = r.readLine()) != null) {
-                total.append(line);
+                total.append(line).append("\n");
             }
             licencesText = total.toString();
         } catch (IOException e) {
