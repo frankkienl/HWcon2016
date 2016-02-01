@@ -14,8 +14,13 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
@@ -24,12 +29,78 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.util.GoogleApiUtil;
 import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * Created by FrankkieNL on 13-1-2015.
  */
-public class AboutAppActivity extends AppCompatActivity {
+public class AboutAppActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    //<editor-fold desc="Silent Google Play Games login">
+    private GoogleApiClient mGoogleApiClient;
+
+    public void initGoogleApi() {
+        mGoogleApiClient = buildGoogleApiClient();
+    }
+
+    private GoogleApiClient buildGoogleApiClient() {
+        return new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+            }
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        //silently ignore errors
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        //silently ignore errors
+    }
+    //</editor-fold>
 
     int timesClicked = 0;
 
@@ -62,6 +133,16 @@ public class AboutAppActivity extends AppCompatActivity {
                 showLicenceInfo();
             }
         });
+        btnViewLicences.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mGoogleApiClient.isConnected()){
+                    Games.Achievements.unlock(mGoogleApiClient, getString(R.string.achievement_another_easter_egg));
+                }
+                Toast.makeText(AboutAppActivity.this, R.string.another_easteregg_found, Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
 
         //Easter Egg stuff
         ImageView image = (ImageView) findViewById(R.id.aboutapp_frankkienl_image);
@@ -76,9 +157,11 @@ public class AboutAppActivity extends AppCompatActivity {
                 }
             }
         });
+
+        initGoogleApi();
     }
 
-    public void showLicenceInfo(){
+    public void showLicenceInfo() {
         //Read licence-info from licences.txt in assets.
         String licencesText = "";
         try {

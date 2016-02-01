@@ -15,6 +15,9 @@ import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 
 import org.acra.ACRA;
 
@@ -32,7 +35,72 @@ import nl.frankkie.hwcon2016.util.Util;
  * <p/>
  * Created by fbouwens on 19-1-2016.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    //<editor-fold desc="Silent Google Play Games login">
+    private GoogleApiClient mGoogleApiClient;
+
+    public void initGoogleApi() {
+        mGoogleApiClient = buildGoogleApiClient();
+    }
+
+    private GoogleApiClient buildGoogleApiClient() {
+        return new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+            }
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        //silently ignore errors
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        //silently ignore errors
+    }
+    //</editor-fold>
 
     int delay = 3 * 1000; /* 3 seconds */
     Handler handler = new Handler();
@@ -65,6 +133,8 @@ public class SplashActivity extends AppCompatActivity {
 
         //Sync ContentProvider using SyncAdapter
         Util.syncConventionData(this);
+
+        initGoogleApi();
     }
 
     public boolean shouldShowSplash() {
@@ -111,6 +181,10 @@ public class SplashActivity extends AppCompatActivity {
                 //it does acutally does not matter that much
                 //as the killswitch would have been true anyway
                 //( killswitch gets set to true in goToMain )
+
+                if (mGoogleApiClient.isConnected()){
+                    Games.Achievements.unlock(mGoogleApiClient, getString(R.string.achievement_in_a_hurry));
+                }
             }
         });
     }

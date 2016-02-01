@@ -21,6 +21,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
+
+import org.acra.ACRA;
+
 import nl.frankkie.hwcon2016.adapters.NewsListAdapter;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.data.EventContract;
@@ -29,7 +36,72 @@ import nl.frankkie.hwcon2016.util.Util;
 /**
  * Created by FrankkieNL on 1-1-2016.
  */
-public class NewsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    //<editor-fold desc="Silent Google Play Games login">
+    private GoogleApiClient mGoogleApiClient;
+
+    public void initGoogleApi() {
+        mGoogleApiClient = buildGoogleApiClient();
+    }
+
+    private GoogleApiClient buildGoogleApiClient() {
+        return new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            if (mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
+            }
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            mGoogleApiClient.connect();
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        //silently ignore errors
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        //silently ignore errors
+    }
+    //</editor-fold>
 
     /*
     Show list of News articles
@@ -98,7 +170,6 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                         Cursor c = (Cursor) mNewsListAdapter.getItem(position);
                         String url = c.getString(COL_URL);
                         /////
-                        
                         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                         builder.setShowTitle(true);
                         if (Build.VERSION.SDK_INT >= 23) {
@@ -107,6 +178,10 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                             builder.setToolbarColor(getResources().getColor(R.color.actionbar_background));
                         }
                         builder.build().launchUrl(getActivity(), Uri.parse(url));
+                        //
+                        if (mGoogleApiClient.isConnected()){
+                            Games.Achievements.increment(mGoogleApiClient, getString(R.string.achievement_egghead), 1);
+                        }
                     }
                 }
         );
@@ -119,6 +194,8 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(NEWS_LOADER, null, this);
+
+        initGoogleApi();
     }
 
     @Override
@@ -131,5 +208,9 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         }, 2000);
+
+        if (mGoogleApiClient.isConnected()){
+            Games.Achievements.unlock(mGoogleApiClient, getString(R.string.achievement_latest_news));
+        }
     }
 }

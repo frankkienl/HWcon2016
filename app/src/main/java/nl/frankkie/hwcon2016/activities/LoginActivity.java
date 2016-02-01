@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +35,7 @@ import com.google.android.gms.plus.model.people.Person;
 
 import org.acra.ACRA;
 
+import nl.frankkie.hwcon2016.Manifest;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.GcmUtil;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
@@ -100,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int STATE_IN_PROGRESS = 2;
     private static final String SAVED_PROGRESS = "sign_in_progress";
     private static final int RC_SIGN_IN = 0; //requestcode
+    private static final int MY_PERMISSIONS_REQUEST = 123;
     //
     private GoogleApiClient mGoogleApiClient;
     private int mSignInProgress;
@@ -208,7 +213,27 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+            mGoogleApiClient.connect();
+        } else {
+            //Request
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisAct,
+                    android.Manifest.permission.GET_ACCOUNTS)) {
+                Toast.makeText(this, "You need to give permission to access these features", Toast.LENGTH_LONG).show();
+            }
+            ActivityCompat.requestPermissions(thisAct,
+                    new String[]{android.Manifest.permission.GET_ACCOUNTS},
+                    MY_PERMISSIONS_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            mGoogleApiClient.connect();
+        } else {
+            Toast.makeText(this, "You need to give permission to access these features", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -244,7 +269,7 @@ public class LoginActivity extends AppCompatActivity implements
         Util.syncData(this, Util.SYNCFLAG_DOWNLOAD_QRFOUND);
         //Send to server
         if (!GoogleApiUtil.isUserLoggedIn(this)) {
-            LoggedInTask task = new LoggedInTask(this, currentUserEmail, currentUser, GcmUtil.gcmGetRegId(this));            
+            LoggedInTask task = new LoggedInTask(this, currentUserEmail, currentUser, GcmUtil.gcmGetRegId(this));
             task.execute();
         }
         //Now, set logged in and stuff.
@@ -325,7 +350,7 @@ public class LoginActivity extends AppCompatActivity implements
                     }
                 } else if (!nickname.equals(defaultNickname)) {
                     //User has given a new nickname, send to server
-                    ChangeNicknameTask task = new ChangeNicknameTask(GoogleApiUtil.getUserEmail(c),nickname,GcmUtil.gcmGetRegId(c));
+                    ChangeNicknameTask task = new ChangeNicknameTask(GoogleApiUtil.getUserEmail(c), nickname, GcmUtil.gcmGetRegId(c));
                     task.execute();
                 }
                 GoogleApiUtil.setUserNickname(c, nickname);
@@ -374,11 +399,11 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected Void doInBackground(Void... params) {
             String url = "https://wofje.8s.nl/hwcon2016/api/v1/changenickname.php?useremail=" + email + "&regId=" + regId + "&nickname=" + nickname;
-            url = url.replace(" ","+");
+            url = url.replace(" ", "+");
             try {
                 Util.httpDownload(url);
             } catch (Exception e) {
-                ACRA.getErrorReporter().putCustomData("url",url);
+                ACRA.getErrorReporter().putCustomData("url", url);
                 ACRA.getErrorReporter().handleException(e);
                 e.printStackTrace();
             }
@@ -410,13 +435,13 @@ public class LoginActivity extends AppCompatActivity implements
         protected String doInBackground(Void... params) {
             String response = null;
             String url = "https://wofje.8s.nl/hwcon2016/api/v1/applogin.php?useremail=" + email + "&regId=" + regId + "&gplusname=" + user.getDisplayName();
-            url = url.replace(" ","+");
+            url = url.replace(" ", "+");
             try {
                 response = Util.httpDownload(url);
                 response = response.trim();
             } catch (Exception e) {
                 e.printStackTrace();
-                ACRA.getErrorReporter().putCustomData("url",url);
+                ACRA.getErrorReporter().putCustomData("url", url);
                 ACRA.getErrorReporter().handleException(e);
             }
             return response;
@@ -429,8 +454,8 @@ public class LoginActivity extends AppCompatActivity implements
             } catch (Exception e) {
                 //ignore.                   
             }
-            if (response == null){
-                response = "";                
+            if (response == null) {
+                response = "";
             }
             askUserForNickname(context, response);
         }

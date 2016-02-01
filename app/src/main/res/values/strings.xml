@@ -70,6 +70,11 @@
     <string name="achievement_its_a_start" translatable="false">CgkI5uOI554bEAIQAw</string>
     <string name="achievement_easter_egg" translatable="false">CgkI5uOI554bEAIQBA</string>
     <string name="achievement_find_5" translatable="false">CgkI5uOI554bEAIQBQ</string>
+    <string name="achievement_egghead" translatable="false">CgkI5uOI554bEAIQBw</string>
+    <string name="achievement_personal_style" translatable="false">CgkI5uOI554bEAIQCA</string>
+    <string name="achievement_in_a_hurry" translatable="false">CgkI5uOI554bEAIQCQ</string>
+    <string name="achievement_latest_news" translatable="false">CgkI5uOI554bEAIQCg</string>
+    <string name="achievement_another_easter_egg" translatable="false">CgkI5uOI554bEAIQCw</string>
     <string name="sign_out">Sign out</string>
     <string name="view_achievements">View Achievements</string>
     <string name="qrlist_empty_placeholder">QR code list is empty</string>
@@ -101,5 +106,6 @@
     <string name="not_logged_in">not logged in</string>
     <string name="current_lang">EN</string>
     <string name="about_convention_title">Hearth\'s Warming Con</string>
+    <string name="another_easteregg_found">Found another easter egg :D</string>
 
 </resources>
