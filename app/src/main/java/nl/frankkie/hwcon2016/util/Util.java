@@ -495,6 +495,11 @@ public class Util {
         //set default here
         return prefs.getInt("app_icon", R.drawable.ic_launcher_hwcon2016_4_web);
     }
+    public static int getPlaceholderIconResourceId(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //set default here
+        return prefs.getInt("app_icon_mipmap", R.mipmap.ic_launcher_hwcon2016_4);
+    }
 
     public static void navigationItemSelected(Activity thisAct, NavigationView navigationView, DrawerLayout drawerLayout, MenuItem menuItem) {
         //http://www.android4devs.com/2015/06/navigation-view-material-design-support.html

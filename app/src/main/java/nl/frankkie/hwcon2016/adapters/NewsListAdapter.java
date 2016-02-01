@@ -13,6 +13,7 @@ import com.koushikdutta.ion.Ion;
 
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.fragments.NewsFragment;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * Created by FrankkieNL on 1-1-2016.
@@ -38,11 +39,12 @@ public class NewsListAdapter extends CursorAdapter {
         String imageStr = cursor.getString(NewsFragment.COL_IMAGE);
         String title = cursor.getString(NewsFragment.COL_TITLE);
         String url = cursor.getString(NewsFragment.COL_URL);
+        int placeholderIcon = Util.getPlaceholderIconResourceId(context);
         viewHolder.mTitle.setText(title);
         Ion.with(context).load(imageStr)
                 .withBitmap()
-                .error(R.mipmap.ic_launcher_hwcon2016_1)
-                .placeholder(R.mipmap.ic_launcher_hwcon2016_1)
+                .error(placeholderIcon)
+                .placeholder(placeholderIcon)
                 .intoImageView(viewHolder.mImage);
     }
 

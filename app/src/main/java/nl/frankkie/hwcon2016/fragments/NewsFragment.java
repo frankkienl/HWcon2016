@@ -3,10 +3,13 @@ package nl.frankkie.hwcon2016.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -41,6 +44,9 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
     public static final int COL_TITLE = 1;
     public static final int COL_IMAGE = 2;
     public static final int COL_URL = 3;
+    //https://developer.chrome.com/multidevice/android/customtabs
+    private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
+    private static final String EXTRA_CUSTOM_TABS_TOOLBAR_COLOR = "android.support.customtabs.extra.TOOLBAR_COLOR";
 
     public static final String[] NEWS_COLUMNS = {
             EventContract.NewsEntry.TABLE_NAME + "." + EventContract.NewsEntry._ID,
@@ -91,10 +97,16 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                         //start browser with URL
                         Cursor c = (Cursor) mNewsListAdapter.getItem(position);
                         String url = c.getString(COL_URL);
-                        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        //https://developer.chrome.com/multidevice/android/customtabs#configure-the color of the address bar
-                        i.putExtra("android.support.customtabs.extra.TOOLBAR_COLOR",R.color.actionbar_background);
-                        startActivity(i);
+                        /////
+                        
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        builder.setShowTitle(true);
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            builder.setToolbarColor(getResources().getColor(R.color.actionbar_background, null));
+                        } else {
+                            builder.setToolbarColor(getResources().getColor(R.color.actionbar_background));
+                        }
+                        builder.build().launchUrl(getActivity(), Uri.parse(url));
                     }
                 }
         );
