@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.fragments.AppIconDialogFragment;
 import nl.frankkie.hwcon2016.util.Util;
 
 
@@ -113,42 +115,11 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
-    public static final int[] ICONS = {R.drawable.ic_launcher_hwcon2016_1_web, R.drawable.ic_launcher_hwcon2016_2_web, R.drawable.ic_launcher_hwcon2016_3_web};
-
     public void showChangeIconDialog() {
-        String[] iconNames = new String[ICONS.length];
-        for (int i = 0; i < ICONS.length; i++) {
-            iconNames[i] = "Icon " + (i + 1);
-        }
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setItems(iconNames, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                changeAppIcon(which);
-            }
-        });
-        b.create().show();
-    }
+        AppIconDialogFragment a = new AppIconDialogFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        a.show(fragmentTransaction,"Pick Icon Dialog");
 
-    public void changeAppIcon(int choiceIndex) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putInt("app_icon", ICONS[choiceIndex]);
-        prefsEditor.commit();
-        //
-        PackageManager pm = getApplicationContext().getPackageManager();
-        for (int i = 0; i < ICONS.length; i++) {
-            ComponentName componentName = new ComponentName(getPackageName(), getPackageName() + ".activities.Splash" + (i + 1) + "Activity");
-            if (i == choiceIndex) {
-                //enable this one
-                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            } else {
-                //disable this one
-                pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            }
-        }
-        //
-        Snackbar.make(findViewById(R.id.container), R.string.about_changedicon, Snackbar.LENGTH_LONG).show();
     }
 
 }
