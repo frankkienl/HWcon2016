@@ -350,24 +350,26 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                         notificationManagerCompat.notify(0, b.build());
                     }
 
-                    if (latestBetaVersion > pInfo.versionCode) {
-                        //TODO: better management of beta-users.
-                        //only beta-testers should get a notification that there is a new APK
-                        //regular uses should just upgrade via the play store,
-                        //even if that versioncode is lower that the beta versioncode.
-                        boolean isBetaUser = true;
-                        if (isBetaUser) {
-                            NotificationCompat.Builder b = new NotificationCompat.Builder(getContext());
-                            b.setSmallIcon(R.drawable.ic_stat_notification_heart);
-                            b.setContentTitle("Update available [BETA]");
-                            b.setContentText("Please update " + getContext().getString(R.string.app_name) + " [BETA]");
-                            b.setAutoCancel(true);
-                            Intent playStoreIntent = new Intent();
-                            playStoreIntent.setData(Uri.parse(latestBetaApkUrl));
-                            PendingIntent pi = PendingIntent.getActivity(getContext(), 0, playStoreIntent, 0);
-                            b.setContentIntent(pi);
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
-                            notificationManagerCompat.notify(0, b.build());
+                    if (Util.isTester(getContext())) {
+                        if (latestBetaVersion > pInfo.versionCode) {
+                            //TODO: better management of beta-users.
+                            //only beta-testers should get a notification that there is a new APK
+                            //regular uses should just upgrade via the play store,
+                            //even if that versioncode is lower that the beta versioncode.
+                            boolean isBetaUser = true;
+                            if (isBetaUser) {
+                                NotificationCompat.Builder b = new NotificationCompat.Builder(getContext());
+                                b.setSmallIcon(R.drawable.ic_stat_notification_heart);
+                                b.setContentTitle("Update available [BETA]");
+                                b.setContentText("Please update " + getContext().getString(R.string.app_name) + " [BETA]");
+                                b.setAutoCancel(true);
+                                Intent playStoreIntent = new Intent();
+                                playStoreIntent.setData(Uri.parse(latestBetaApkUrl));
+                                PendingIntent pi = PendingIntent.getActivity(getContext(), 0, playStoreIntent, 0);
+                                b.setContentIntent(pi);
+                                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
+                                notificationManagerCompat.notify(0, b.build());
+                            }
                         }
                     }
                 } catch (Exception e) {

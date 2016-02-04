@@ -440,7 +440,7 @@ public class Util {
         //remove items that are hidden by SharedPreferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Menu navigationMenu = navigationView.getMenu();
-        if (!prefs.getBoolean("tester", false)) {
+        if (!isTester(context)) {
             //testers get all sections
             if (!prefs.getBoolean("section_schedule_enabled", false)) {
                 navigationMenu.removeItem(R.id.navigation_item_schedule);
@@ -513,5 +513,9 @@ public class Util {
         Intent i = new Intent();
         navigateFromNavDrawer(thisAct, i.setClass(thisAct, getSectionIdClass(menuItem.getItemId())));
         drawerLayout.closeDrawers();
+    }
+
+    public static boolean isTester(Context c) {
+        return PreferenceManager.getDefaultSharedPreferences(c).getBoolean("tester", false);
     }
 }
