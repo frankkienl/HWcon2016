@@ -440,26 +440,29 @@ public class Util {
         //remove items that are hidden by SharedPreferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Menu navigationMenu = navigationView.getMenu();
-        if (!prefs.getBoolean("section_schedule_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_schedule);
-        }
-        if (!prefs.getBoolean("section_browse_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_browse);
-        }
-        if (!prefs.getBoolean("section_map_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_map);
-        }
-        if (!prefs.getBoolean("section_qrhunt_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_qrhunt);
-        }
-        if (!prefs.getBoolean("section_login_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_login);
-        }
-        if (!prefs.getBoolean("section_about_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_about);
-        }
-        if (!prefs.getBoolean("section_news_enabled", true)) {
-            navigationMenu.removeItem(R.id.navigation_item_news);
+        if (!prefs.getBoolean("tester", false)) {
+            //testers get all sections
+            if (!prefs.getBoolean("section_schedule_enabled", false)) {
+                navigationMenu.removeItem(R.id.navigation_item_schedule);
+            }
+            if (!prefs.getBoolean("section_browse_enabled", false)) {
+                navigationMenu.removeItem(R.id.navigation_item_browse);
+            }
+            if (!prefs.getBoolean("section_map_enabled", false)) {
+                navigationMenu.removeItem(R.id.navigation_item_map);
+            }
+            if (!prefs.getBoolean("section_qrhunt_enabled", false)) {
+                navigationMenu.removeItem(R.id.navigation_item_qrhunt);
+            }
+            if (!prefs.getBoolean("section_login_enabled", false)) {
+                navigationMenu.removeItem(R.id.navigation_item_login);
+            }
+            if (!prefs.getBoolean("section_about_enabled", true)) {
+                navigationMenu.removeItem(R.id.navigation_item_about);
+            }
+            if (!prefs.getBoolean("section_news_enabled", true)) {
+                navigationMenu.removeItem(R.id.navigation_item_news);
+            }
         }
 
         //set the current section selected
@@ -487,15 +490,16 @@ public class Util {
 
         //Set image same as splash / launcher icon
         //http://stackoverflow.com/questions/33194594/navigationview-get-find-header-layout
-        ((ImageView)navigationView.getHeaderView(0).findViewById(R.id.nav_header_image)).setImageResource(getAppIconResourceId(context));
+        ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_image)).setImageResource(getAppIconResourceId(context));
     }
 
-    public static int getAppIconResourceId(Context context){
+    public static int getAppIconResourceId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //set default here
         return prefs.getInt("app_icon", R.drawable.ic_launcher_hwcon2016_4_web);
     }
-    public static int getPlaceholderIconResourceId(Context context){
+
+    public static int getPlaceholderIconResourceId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //set default here
         return prefs.getInt("app_icon_mipmap", R.mipmap.ic_launcher_hwcon2016_4);

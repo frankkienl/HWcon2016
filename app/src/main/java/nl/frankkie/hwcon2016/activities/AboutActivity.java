@@ -3,12 +3,14 @@ package nl.frankkie.hwcon2016.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -164,9 +167,10 @@ public class AboutActivity extends AppCompatActivity implements GoogleApiClient.
         btnViewMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(AboutActivity.this, AboutVenueLocationActivity.class);
-                startActivity(i);
+//                Intent i = new Intent();
+//                i.setClass(AboutActivity.this, AboutVenueLocationActivity.class);
+//                startActivity(i);
+                viewInMapApp();
             }
         });
         Button btnAboutApp = (Button) findViewById(R.id.about_btn_aboutapp);
@@ -176,6 +180,14 @@ public class AboutActivity extends AppCompatActivity implements GoogleApiClient.
                 Intent i = new Intent();
                 i.setClass(AboutActivity.this, AboutAppActivity.class);
                 startActivity(i);
+            }
+        });
+        btnAboutApp.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PreferenceManager.getDefaultSharedPreferences(AboutActivity.this).edit().putBoolean("tester", true).commit();
+                Toast.makeText(AboutActivity.this, "test mode enabled", Toast.LENGTH_LONG).show();
+                return true;
             }
         });
         View v = findViewById(R.id.about_banner);
@@ -191,11 +203,24 @@ public class AboutActivity extends AppCompatActivity implements GoogleApiClient.
     public void showChangeIconDialog() {
         AppIconDialogFragment a = new AppIconDialogFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        a.show(fragmentTransaction,"Pick Icon Dialog");
+        a.show(fragmentTransaction, "Pick Icon Dialog");
 
-        if (mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             Games.Achievements.unlock(mGoogleApiClient, getString(R.string.achievement_personal_style));
         }
     }
 
+    public void viewInMapApp() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        //i.setData(Uri.parse("https://www.google.nl/maps?t=m&z=15&cid=11779929733433826402"));
+        //i.setData(Uri.parse("geo:52.3118607,4.6636143"));
+        //i.setData(Uri.parse("geo:0,0?q=52.3118607,4.6636143(Venue)"));
+        i.setData(Uri.parse("geo:0,0?q=IJweg%201094%202133%20MH%20Hoofddorp"));
+        try {
+            startActivity(i);
+        } catch (ActivityNotFoundException anfe) {
+            //This happens on the emulator, when google maps is not installed
+            Toast.makeText(AboutActivity.this, R.string.about_map_app_not_found, Toast.LENGTH_LONG).show();
+        }
+    }
 }
