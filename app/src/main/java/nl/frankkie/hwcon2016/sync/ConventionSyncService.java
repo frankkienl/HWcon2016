@@ -9,16 +9,16 @@ import android.os.IBinder;
  */
 public class ConventionSyncService extends Service {
 
-    private static ConventionSyncAdapter sSyncAdapter= null;
+    private static ConventionSyncAdapter sSyncAdapter = null;
     private static final Object sSyncAdapterLock = new Object();
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        synchronized (sSyncAdapterLock){
-            if (sSyncAdapter == null){
-                sSyncAdapter = new ConventionSyncAdapter(getApplicationContext(),true);
+        synchronized (sSyncAdapterLock) {
+            if (sSyncAdapter == null) {
+                sSyncAdapter = new ConventionSyncAdapter(getApplicationContext(), true);
             }
         }
     }
