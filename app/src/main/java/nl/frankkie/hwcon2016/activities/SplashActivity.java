@@ -151,7 +151,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         Intent i = new Intent();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //which screen to go to
-        String sectionAfterSplash = prefs.getString("section_after_splash", "browse");
+        String sectionAfterSplash = prefs.getString("section_after_splash", "news");
         i.setClass(this, Util.getSectionClass(sectionAfterSplash));
         startActivity(i);
 
