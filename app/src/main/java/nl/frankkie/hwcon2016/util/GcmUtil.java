@@ -62,104 +62,6 @@ public class GcmUtil {
     }
 
     /**
-     * This is called from the AsyncTask started in gcmRegister.
-     *
-     * @param context
-     * @param regId
-     */
-    public static void gcmSetRegId(Context context, String regId) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("gcm_reg_id", regId);
-        try {
-            editor.putInt("gcm_app_version", context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
-        } catch (PackageManager.NameNotFoundException nnfe) {
-            Log.e(context.getString(R.string.app_name), "This app is apparently not installed. Weird.\n" + nnfe);
-            Util.sendACRAReport("GcmUtil.gcmSetRegId", "This app is not installed", "gcm_reg_id", nnfe);
-        }
-        editor.apply();
-    }
-
-    /**
-     * This is called from the AsyncTask started in gcmUnregister
-     *
-     * @param context
-     * @param regId
-     * @throws java.io.IOException will be handled in AsyncTask :P
-     */
-    public static void gcmSendUnregisterToServer(Context context, String regId) throws IOException {
-        HttpURLConnection urlConnection = null;
-        BufferedReader br = null;
-        PrintWriter pw = null;
-        String postData = "regId=" + regId;
-        try {
-            //For rant, see nl.frankkie.hwcon2016.sync.Util
-            URL url = new URL("https://wofje.8s.nl/hwcon2016/api/v1/gcmunregister.php");
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            //http://stackoverflow.com/questions/4205980/java-sending-http-parameters-via-post-method-easily
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true); //output, because post-data
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            //urlConnection.setRequestProperty("charset","utf-8");
-            urlConnection.setRequestProperty("Content-Length", "" + postData.getBytes().length); //simple int to String casting.
-            urlConnection.setUseCaches(false);
-            urlConnection.connect();
-            OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
-            pw = new PrintWriter(os);
-            pw.print(postData);
-            pw.flush();
-            pw.close();
-            InputStream is = urlConnection.getInputStream();
-            StringBuilder sb = new StringBuilder();
-            br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while (true) {
-                line = br.readLine();
-                if (line == null) {
-                    break;
-                }
-                sb.append(line).append("\n");
-            }
-            if (sb.length() == 0) {
-                Log.e(context.getString(R.string.app_name), "gcmSendUnregisterToServer: Empty Response");
-                Util.sendACRAReport("GcmUtil.gcmSendUnregisterToServer", "Empty Response", url.toString());
-            } else {
-                Log.e(context.getString(R.string.app_name), "gcmSendUnregisterToServer response:\n" + sb.toString().trim());
-                if (!"ok".equals(sb.toString().trim())) {
-                    //Server should return 'ok' onSucces, something else otherwise
-                    //So some error has occured
-                    IOException e = new IOException("gcmSendUnregisterToServer: Server did not send 'ok', something must be wrong.");
-                    Util.sendACRAReport("GcmUtil.gcmSendUnregisterToServer", "Server did not send 'ok', something must be wrong.", url.toString(), e);
-                    throw e;
-                }
-            }
-        } catch (IOException ioe) {
-            Log.e(context.getString(R.string.app_name), "gcmSendUnregisterToServer: IOException");
-            Util.sendACRAReport("GcmUtil.gcmSendUnregisterToServer", "IOException", "", ioe);
-            ioe.printStackTrace();
-            throw new IOException(ioe); //throw to method that called this.
-        } finally {
-            //*cough* boilerplate *cough*
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    Log.e(context.getString(R.string.app_name), "Error closing BufferedReader", e);
-                    Util.sendACRAReport("GcmUtil.gcmSendUnregisterToServer", "Error closing BufferedReader (IOException)", "", e);
-                    e.printStackTrace();
-                }
-            }
-            if (pw != null) {
-                pw.close();
-            }
-        }
-    }
-
-    /**
      * This is called from the AsyncTask started in gcmRegister
      *
      * @param context
@@ -262,6 +164,8 @@ public class GcmUtil {
             Util.syncData(context,Util.SYNCFLAG_UPLOAD_QRFOUND);
         } else if ("downloadQrFound".equals(action)){
             Util.syncData(context, Util.SYNCFLAG_DOWNLOAD_QRFOUND);
+        } else if ("updateSettings".equals(action)){
+            Util.updateSettingsFromGCM(context, data);
         }
     }
 

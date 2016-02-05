@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import com.google.zxing.client.android.Intents;
 
 import org.acra.ACRA;
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -40,6 +41,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import nl.frankkie.hwcon2016.R;
@@ -50,6 +52,7 @@ import nl.frankkie.hwcon2016.activities.MapActivity;
 import nl.frankkie.hwcon2016.activities.NewsActivity;
 import nl.frankkie.hwcon2016.activities.QrHuntActivity;
 import nl.frankkie.hwcon2016.activities.ScheduleActivity;
+import nl.frankkie.hwcon2016.fragments.AppIconDialogFragment;
 
 /**
  * Created by fbouwens on 10-12-14.
@@ -394,6 +397,10 @@ public class Util {
         ACRA.getErrorReporter().handleException(e);
     }
 
+    public static void sendACRAReport(String errormethod, Exception e) {
+        sendACRAReport(errormethod, e.toString(), e.getMessage(), e);
+    }
+
     /**
      * SHA1 hash
      *
@@ -517,5 +524,43 @@ public class Util {
 
     public static boolean isTester(Context c) {
         return PreferenceManager.getDefaultSharedPreferences(c).getBoolean("tester", false);
+    }
+
+    public static void updateSettingsFromGCM(Context context, Bundle data) {
+        try {
+            SharedPreferences.Editor e = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            JSONObject j = new JSONObject(data.getString("message", "{}"));
+            /*
+            {
+                "tester": {
+                    "type": "boolean",
+                    "value": true
+                },
+                "a": {
+                    "type": "string",
+                    "value": "koekjes"
+                }
+            }
+             */
+            Iterator<String> keys = j.keys();
+            while (keys.hasNext()) {
+                String settingName = keys.next();
+                JSONObject setting = j.getJSONObject(settingName);
+                if ("icon".equals(settingName)){
+                    AppIconDialogFragment.changeAppIcon(context, setting.getInt("value"));
+                    continue;
+                }
+                if ("boolean".equals(setting.getString("type"))) {
+                    e.putBoolean(settingName, setting.getBoolean("value")).commit();
+                } else if ("string".equals(setting.getString("type"))) {
+                    e.putString(settingName, setting.getString("value")).commit();
+                } else if ("int".equals(setting.getString("type"))) {
+                    e.putInt(settingName, setting.getInt("value")).commit();
+                }
+            }
+        } catch (Exception ex) {
+            //ignore
+            sendACRAReport("Util.updateSettingsFromGCM", ex);
+        }
     }
 }

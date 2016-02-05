@@ -1,5 +1,6 @@
 package nl.frankkie.hwcon2016.fragments;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * Created by fbouwens on 1-2-2016.
@@ -43,7 +45,7 @@ public class AppIconDialogFragment extends DialogFragment {
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    changeAppIcon(id);
+                    changeAppIcon(getActivity(), id);
                     //remove dialog
                     dismiss();
                 }
@@ -54,16 +56,16 @@ public class AppIconDialogFragment extends DialogFragment {
         return rootView;
     }
 
-    public void changeAppIcon(int choiceIndex) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    public static void changeAppIcon(Context context, int choiceIndex) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putInt("app_icon", ICONS[choiceIndex]);
         prefsEditor.putInt("app_icon_mipmap", ICONS_mipmap[choiceIndex]);
         prefsEditor.commit();
         //
-        PackageManager pm = getActivity().getPackageManager();
+        PackageManager pm = context.getPackageManager();
         for (int i = 0; i < ICONS.length; i++) {
-            ComponentName componentName = new ComponentName(getActivity().getPackageName(), getActivity().getPackageName() + ".activities.Splash" + (i + 1) + "Activity");
+            ComponentName componentName = new ComponentName(context.getPackageName(), context.getPackageName() + ".activities.Splash" + (i + 1) + "Activity");
             if (i == choiceIndex) {
                 //enable this one
                 pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
@@ -73,6 +75,12 @@ public class AppIconDialogFragment extends DialogFragment {
             }
         }
         //
-        Snackbar.make(getActivity().findViewById(R.id.container), R.string.about_changedicon, Snackbar.LENGTH_LONG).show();
+        if (context instanceof Activity) {
+            try {
+                Snackbar.make(((Activity) context).findViewById(R.id.container), R.string.about_changedicon, Snackbar.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Util.sendACRAReport("AppIconDialogFragment.changeAppIcon", e);
+            }
+        }
     }
 }

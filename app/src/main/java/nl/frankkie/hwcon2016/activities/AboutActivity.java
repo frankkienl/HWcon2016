@@ -182,22 +182,17 @@ public class AboutActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivity(i);
             }
         });
-        btnAboutApp.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                PreferenceManager.getDefaultSharedPreferences(AboutActivity.this).edit().putBoolean("tester", true).commit();
-                Toast.makeText(AboutActivity.this, "test mode enabled", Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
         View v = findViewById(R.id.about_banner);
-        v.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showChangeIconDialog();
-                return true;
-            }
-        });
+        if (Util.isTester(this)) {
+            //only testers are allowed to change the icon.
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showChangeIconDialog();
+                    return true;
+                }
+            });
+        }
     }
 
     public void showChangeIconDialog() {
