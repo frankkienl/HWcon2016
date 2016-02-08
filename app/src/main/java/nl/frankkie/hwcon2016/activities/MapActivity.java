@@ -94,8 +94,11 @@ public class MapActivity extends AppCompatActivity {
         //http://stackoverflow.com/questions/3808532/how-to-set-the-initial-zoom-width-for-a-webview
         wv.getSettings().setLoadWithOverviewMode(true);
         wv.getSettings().setUseWideViewPort(true);
-        wv.loadUrl("file:///android_asset/map.html");
         wv.getSettings().setBuiltInZoomControls(true);
+
+        //Check if map-data is already downloaded.
+        //if not, show a page that says so.
+        wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
     }
 
 }
