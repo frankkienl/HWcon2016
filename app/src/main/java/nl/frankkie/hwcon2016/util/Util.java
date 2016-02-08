@@ -110,62 +110,12 @@ public class Util {
         return displayDateFormat.format(parsedDate);
     }
 
-    public static String getDataTimeString(long timestamp) {
-        //OLD VERSION, in hte old version we used timestamps, new version uses MySQL DateTime.
-        //*1000, because
-        // http://www.onlineconversion.com/unix_time.htm
-        // uses SECONDS from 1970, but Date uses MILLISECONDS from 1970
-        return displayDateFormat.format(new Date(timestamp * 1000));
-    }
-
     public static void navigateFromNavDrawer(Activity from, Intent to) {
         //Inspired by NavUtils.navigateToUp
         //see: https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/app/NavUtils.java
         to.addFlags(navigationDrawerIntentFlags);
         from.startActivity(to);
         from.finish();
-    }
-
-    public static void navigateFromNavDrawer(Activity thisAct, int position) {
-        switch (position) {
-            case 0: {
-                if (!(thisAct instanceof ScheduleActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, ScheduleActivity.class));
-                break;
-            }
-            case 1: {
-                //Don't restart current activity
-                if (!(thisAct instanceof EventListActivity))
-                    //Not instanceof, see: http://stackoverflow.com/questions/9068150/best-way-to-negate-an-instanceof
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, EventListActivity.class));
-                break;
-            }
-            case 2: {
-                if (!(thisAct instanceof MapActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, MapActivity.class));
-                break;
-            }
-            case 3: {
-                if (!(thisAct instanceof QrHuntActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, QrHuntActivity.class));
-                break;
-            }
-            case 4: {
-                if (!(thisAct instanceof LoginActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, LoginActivity.class));
-                break;
-            }
-            case 5: {
-                if (!(thisAct instanceof AboutActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, AboutActivity.class));
-                break;
-            }
-            case 6: {
-                if (!(thisAct instanceof NewsActivity))
-                    navigateFromNavDrawer(thisAct, new Intent(thisAct, NewsActivity.class));
-                break;
-            }
-        }
     }
 
     public static Account createDummyAccount(Context context) {
