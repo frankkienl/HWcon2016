@@ -1,15 +1,19 @@
 package nl.frankkie.hwcon2016.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebView;
+
+import java.io.File;
 
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.util.Util;
@@ -96,9 +100,27 @@ public class MapActivity extends AppCompatActivity {
         wv.getSettings().setUseWideViewPort(true);
         wv.getSettings().setBuiltInZoomControls(true);
 
-        //Check if map-data is already downloaded.
-        //if not, show a page that says so.
         wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
+
+    }
+
+    public void checkMapDownloaded(){
+        File mapDir = new File(getExternalFilesDir(null),"/hwcon2016/map/");
+        if (!mapDir.exists()){
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setTitle("Map Download");
+            b.setMessage("The map will of the venue will be downloaded and saved to your SD card.\n\nThe system will ask you for permission to acces the SD card. Please allow this permission, otherwise you won't be able to use the map.");
+            b.setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    askSdPermission();
+                }
+            });
+        }
+    }
+
+    public void askSdPermission(){
+        //TODO 
     }
 
 }
