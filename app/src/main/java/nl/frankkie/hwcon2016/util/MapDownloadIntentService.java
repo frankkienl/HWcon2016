@@ -19,6 +19,8 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import nl.frankkie.hwcon2016.R;
+
 /**
  * Created by FrankkieNL on 2/14/2016.
  */
@@ -30,17 +32,31 @@ public class MapDownloadIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        doStuff();
+        intent.getBooleanArrayExtra("force");
+        doStuff(intent.getBooleanExtra("force", false));
     }
 
-    public void doStuff() {
-        String urlToDownload = "";
-        HttpURLConnection urlConnection = null;
-        File mapZipFile = new File(getExternalFilesDir(null), "/hwcon2016/mapDownload.zip");
+    /**
+     * force=true will download the map again, even when you have the latest version already
+     */
+    public void doStuff(boolean force) {
+        //check, is it needed to download
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.contains("map_download_url")) {
+            Log.e(getString(R.string.app_name), "No map download url");
             return; //we're done here
         }
+        int latestMapVersion = prefs.getInt("map_latest_version", -1);
+        int downloadedMapVersion = prefs.getInt("map_downloaded_version", -1);
+        if (downloadedMapVersion == latestMapVersion && !force) {
+            //latest version already downloaded!
+            Log.i(getString(R.string.app_name), "latest map version already downloaded");
+            return;
+        }
+
+        String urlToDownload = "";
+        HttpURLConnection urlConnection = null;
+        File mapZipFile = new File(getExternalFilesDir(null), "/mapDownload.zip");
         urlToDownload = prefs.getString("map_download_url", "");
 
         try {
@@ -57,6 +73,9 @@ public class MapDownloadIntentService extends IntentService {
                 return;
             }
 
+            if (!mapZipFile.exists()) {
+                mapZipFile.createNewFile();
+            }
             FileOutputStream fileOutputStream = new FileOutputStream(mapZipFile);
             byte[] buffer = new byte[8192];
             int byteCount = 0;
@@ -81,7 +100,7 @@ public class MapDownloadIntentService extends IntentService {
         //Unzip
         try {
             //delete previous files
-            File mapDir = new File(getExternalFilesDir(null), "/hwcon2016/map/");
+            File mapDir = new File(getExternalFilesDir(null), "/map/");
             mapDir.mkdirs(); //make folder
             deleteContentsOfDir(mapDir);
             unzip(mapZipFile, mapDir);
@@ -89,6 +108,10 @@ public class MapDownloadIntentService extends IntentService {
             Util.sendACRAReport("MapDownloadIntentService.doStuff", e);
             return;
         }
+
+        //set downloaded version
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("map_downloaded_version", latestMapVersion).commit();
 
         //send local broadcast
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);

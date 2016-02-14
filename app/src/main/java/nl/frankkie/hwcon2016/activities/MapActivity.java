@@ -84,6 +84,7 @@ public class MapActivity extends AppCompatActivity {
 
     WebView wv;
     private static final int MY_PERMISSIONS_REQUEST = 1234;
+    MyLocalBroadcastReceiver myLocalBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,25 +116,34 @@ public class MapActivity extends AppCompatActivity {
 
         wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
 
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        myLocalBroadcastReceiver = new MyLocalBroadcastReceiver();
+        localBroadcastManager.registerReceiver(myLocalBroadcastReceiver, new IntentFilter());
+
         checkMapDownloaded();
     }
 
     public void checkMapDownloaded() {
         askPermssion();
         //Map stuff
-        File mapDir = new File(getExternalFilesDir(null), "/hwcon2016/map/");
+        File mapDir = new File(getExternalFilesDir(null), "/map/");
+        File indexFile = new File(mapDir, "index.html");
 
-        if (!mapDir.exists()) {
+        if (!indexFile.exists()) {
             //So, not downloaded yet, load the 'not downloaded yet'-map
             wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
-            downloadMap();
-
-            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-            localBroadcastManager.registerReceiver(new MyLocalBroadcastReceiver(), new IntentFilter());
-            return;
         } else {
-            wv.loadUrl("file://" + new File(mapDir, "/index.html"));
+            wv.loadUrl("file://" + indexFile.getAbsolutePath());
         }
+
+        downloadMap();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.unregisterReceiver(myLocalBroadcastReceiver);
     }
 
     public void downloadMap() {
@@ -162,7 +172,6 @@ public class MapActivity extends AppCompatActivity {
             return; //We'll get back to map-stuff after permission is granted
         }
     }
-
 
 
     @Override

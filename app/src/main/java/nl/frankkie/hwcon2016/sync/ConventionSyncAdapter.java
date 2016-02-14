@@ -402,6 +402,11 @@ public class ConventionSyncAdapter extends AbstractThreadedSyncAdapter {
                     prefsEdit.putBoolean("show_splash", true);
                     prefsEdit.putString("section_after_splash", "browse");
                 }
+                if (app.has("map")){
+                    JSONObject map = app.getJSONObject("map");
+                    prefsEdit.putString("map_download_url",map.getString("url"));
+                    prefsEdit.putInt("map_latest_version",map.getInt("version"));
+                }
                 prefsEdit.commit();
             }
             //</editor-fold>
