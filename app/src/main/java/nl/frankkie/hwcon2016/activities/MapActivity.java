@@ -1,10 +1,20 @@
 package nl.frankkie.hwcon2016.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -12,10 +22,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.io.File;
 
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.util.MapDownloadIntentService;
 import nl.frankkie.hwcon2016.util.Util;
 
 
@@ -71,6 +83,7 @@ public class MapActivity extends AppCompatActivity {
     //</editor-fold>
 
     WebView wv;
+    private static final int MY_PERMISSIONS_REQUEST = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,25 +115,71 @@ public class MapActivity extends AppCompatActivity {
 
         wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
 
+        checkMapDownloaded();
     }
 
-    public void checkMapDownloaded(){
-        File mapDir = new File(getExternalFilesDir(null),"/hwcon2016/map/");
-        if (!mapDir.exists()){
-            AlertDialog.Builder b = new AlertDialog.Builder(this);
-            b.setTitle("Map Download");
-            b.setMessage("The map will of the venue will be downloaded and saved to your SD card.\n\nThe system will ask you for permission to acces the SD card. Please allow this permission, otherwise you won't be able to use the map.");
-            b.setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    askSdPermission();
-                }
-            });
+    public void checkMapDownloaded() {
+        askPermssion();
+        //Map stuff
+        File mapDir = new File(getExternalFilesDir(null), "/hwcon2016/map/");
+
+        if (!mapDir.exists()) {
+            //So, not downloaded yet, load the 'not downloaded yet'-map
+            wv.loadUrl("file:///android_asset/map/map_not_downloaded.html");
+            downloadMap();
+
+            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+            localBroadcastManager.registerReceiver(new MyLocalBroadcastReceiver(), new IntentFilter());
+            return;
+        } else {
+            wv.loadUrl("file://" + new File(mapDir, "/index.html"));
         }
     }
 
-    public void askSdPermission(){
-        //TODO 
+    public void downloadMap() {
+        Intent i = new Intent(this, MapDownloadIntentService.class);
+        startService(i);
     }
 
+    public void askPermssion() {
+        //Check SD card Permission
+        if (true) {
+            //Apparently, you don't need to ask permission for ExternalFilesDir.
+            //http://developer.android.com/guide/topics/data/data-storage.html#AccessingExtFiles
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //Request
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisAct,
+                    android.Manifest.permission.GET_ACCOUNTS)) {
+                Toast.makeText(this, "You need to give permission to access these features", Toast.LENGTH_LONG).show();
+            }
+            ActivityCompat.requestPermissions(thisAct,
+                    new String[]{android.Manifest.permission.GET_ACCOUNTS},
+                    MY_PERMISSIONS_REQUEST);
+
+            return; //We'll get back to map-stuff after permission is granted
+        }
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            checkMapDownloaded();
+        } else {
+            Toast.makeText(this, "You need to give permission to access these features", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public class MyLocalBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            checkMapDownloaded();
+        }
+    }
 }

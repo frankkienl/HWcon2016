@@ -220,6 +220,9 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
+        <!-- Map Download Service //-->
+        <service android:name=".util.MapDownloadIntentService" android:exported="false"/>
+
         <!--
        Google Play Service for GCM
        //-->
