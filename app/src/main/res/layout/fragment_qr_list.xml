@@ -19,7 +19,7 @@
 
     <TextView
         android:visibility="gone"
-        android:text="@string/qrlist_empty_placeholder"
+        android:text="@string/qrlist_empty_no_hunt"
         android:id="@android:id/empty"
         style="@style/textStyle_details"
         android:layout_width="match_parent"

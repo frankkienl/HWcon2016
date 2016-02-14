@@ -78,6 +78,7 @@
     <string name="sign_out">Sign out</string>
     <string name="view_achievements">View Achievements</string>
     <string name="qrlist_empty_placeholder">QR code list is empty</string>
+    <string name="qrlist_empty_no_hunt">There is no QR hunt at this convention.\n\nBlame convention staff.</string>
     <string name="qrlist_empty_names_hidden">No QR codes found yet!</string>
     <string name="qr_scan">Scan</string>
     <string name="barcodescanner_not_installed_title">Install Barcode Scanner</string>

@@ -59,5 +59,6 @@
     <string name="current_lang">FR</string>
     <string name="star_tip_title">Don</string>
     <string name="schedule_empty">Il n\'y a rien ici pour le moment.</string>
+    <string name="qrlist_empty_no_hunt">Er is geen QR hunt bij deze conventie.\n\nKomt door conventie staff.</string>
 
 </resources>
