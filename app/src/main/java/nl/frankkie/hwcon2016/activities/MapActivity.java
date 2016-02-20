@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -118,7 +119,8 @@ public class MapActivity extends AppCompatActivity {
 
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         myLocalBroadcastReceiver = new MyLocalBroadcastReceiver();
-        localBroadcastManager.registerReceiver(myLocalBroadcastReceiver, new IntentFilter());
+        IntentFilter intentFilter = new IntentFilter("hwcon2016_map");
+        localBroadcastManager.registerReceiver(myLocalBroadcastReceiver, intentFilter);
 
         checkMapDownloaded();
     }
@@ -188,6 +190,7 @@ public class MapActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.v("HWcon2016","Map update done (received broadcast)");
             checkMapDownloaded();
         }
     }

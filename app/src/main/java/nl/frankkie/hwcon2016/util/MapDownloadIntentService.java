@@ -3,6 +3,7 @@ package nl.frankkie.hwcon2016.util;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -115,7 +116,8 @@ public class MapDownloadIntentService extends IntentService {
 
         //send local broadcast
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        Intent i = new Intent();
+        Intent i = new Intent("hwcon2016_map");
+        i.setData(Uri.parse("hwcon2016://map/"));
         i.putExtra("action", "mapDownloaded");
         localBroadcastManager.sendBroadcast(i);
     }
