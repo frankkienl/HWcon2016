@@ -37,6 +37,7 @@ import nl.frankkie.hwcon2016.activities.EventListActivity;
 import nl.frankkie.hwcon2016.activities.ScheduleActivity;
 import nl.frankkie.hwcon2016.data.EventContract;
 import nl.frankkie.hwcon2016.util.GoogleApiUtil;
+import nl.frankkie.hwcon2016.util.MyLinkMovementMethod;
 import nl.frankkie.hwcon2016.util.Util;
 
 /**
@@ -295,7 +296,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mTitle = (TextView) rootView.findViewById(R.id.event_detail_title);
         mDescription = (TextView) rootView.findViewById(R.id.event_detail_description);
         //http://stackoverflow.com/questions/18571191/why-link-does-not-work-in-the-text-view
-        mDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        mDescription.setMovementMethod(MyLinkMovementMethod.getInstance(getActivity()));
         mKeywords = (TextView) rootView.findViewById(R.id.event_detail_keywords);
         mStartTime = (TextView) rootView.findViewById(R.id.event_detail_starttime);
         mEndTime = (TextView) rootView.findViewById(R.id.event_detail_endtime);

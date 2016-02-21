@@ -116,9 +116,6 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
     public static final int COL_TITLE = 1;
     public static final int COL_IMAGE = 2;
     public static final int COL_URL = 3;
-    //https://developer.chrome.com/multidevice/android/customtabs
-    private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
-    private static final String EXTRA_CUSTOM_TABS_TOOLBAR_COLOR = "android.support.customtabs.extra.TOOLBAR_COLOR";
 
     public static final String[] NEWS_COLUMNS = {
             EventContract.NewsEntry.TABLE_NAME + "." + EventContract.NewsEntry._ID,
@@ -170,6 +167,7 @@ public class NewsFragment extends ListFragment implements LoaderManager.LoaderCa
                         Cursor c = (Cursor) mNewsListAdapter.getItem(position);
                         String url = c.getString(COL_URL);
                         /////
+                        //https://developer.chrome.com/multidevice/android/customtabs
                         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                         builder.setShowTitle(true);
                         if (Build.VERSION.SDK_INT >= 23) {
