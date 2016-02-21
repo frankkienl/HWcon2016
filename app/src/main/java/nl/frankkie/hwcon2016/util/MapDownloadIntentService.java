@@ -117,8 +117,8 @@ public class MapDownloadIntentService extends IntentService {
         //send local broadcast
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         Intent i = new Intent("hwcon2016_map");
-        i.setData(Uri.parse("hwcon2016://map/"));
-        i.putExtra("action", "mapDownloaded");
+        //i.setData(Uri.parse("hwcon2016://map/"));
+        //i.putExtra("action", "mapDownloaded");
         localBroadcastManager.sendBroadcast(i);
     }
 
