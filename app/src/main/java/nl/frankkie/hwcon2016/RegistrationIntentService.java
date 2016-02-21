@@ -44,6 +44,7 @@ public class RegistrationIntentService extends IntentService {
 
             Log.i(TAG, "GCM Registration Token: " + token);
 
+            GcmUtil.gcmSetRegId(this, token);
             GcmUtil.gcmSendRegIdToServer(this, token);
 
             subscribeTopics(token);

@@ -203,7 +203,7 @@ public class ScheduleActivity extends AppCompatActivity implements
         }
 
         initToolbar();
-
+        Util.syncData(this, Util.SYNCFLAG_DOWNLOAD_FAVORITES);
         initGoogleApi();
     }
 

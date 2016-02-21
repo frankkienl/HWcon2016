@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.Locale;
 
 import nl.frankkie.hwcon2016.R;
+import nl.frankkie.hwcon2016.RegistrationIntentService;
 
 /**
  * Created by FrankkieNL on 20-12-2014.
@@ -57,8 +58,25 @@ public class GcmUtil {
         String regId = prefs.getString("gcm_reg_id", "");
         if ("".equals(regId)) {
             Log.e(context.getString(R.string.app_name), "gcm not in SharedPreferences");
+            //Start RegistrataionService.
+            Intent i = new Intent(context, RegistrationIntentService.class);
+            context.startService(i);
         }
         return regId;
+    }
+
+
+    public static void gcmSetRegId(Context context, String s) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("gcm_reg_id", s).commit();
+        try {
+            editor.putInt("gcm_app_version", context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode).commit();
+        } catch (PackageManager.NameNotFoundException nnfe){
+            Log.e(context.getString(R.string.app_name), "This app is apparently not installed. Weird.\n" + nnfe);
+            Log.e(context.getString(R.string.app_name), "gcm package does not exist");
+            Util.sendACRAReport("GcmUtil.gcmGetRegId", "This app is not installed", "gcm_reg_id", nnfe);
+        }
     }
 
     /**
@@ -169,4 +187,4 @@ public class GcmUtil {
         }
     }
 
-   }
+}

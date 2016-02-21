@@ -132,7 +132,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         initUI();
 
         //Sync ContentProvider using SyncAdapter
-        Util.syncConventionData(this);
+        Util.syncData(this, Util.SYNCFLAG_CONVENTION_DATA | Util.SYNCFLAG_DOWNLOAD_FAVORITES);
 
         initGoogleApi();
     }

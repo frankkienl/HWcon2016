@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import nl.frankkie.hwcon2016.R;
 import nl.frankkie.hwcon2016.adapters.ScheduleListAdapter;
 import nl.frankkie.hwcon2016.data.EventContract;
+import nl.frankkie.hwcon2016.util.Util;
 
 /**
  * A list fragment representing a list of Events. This fragment
@@ -29,7 +32,7 @@ import nl.frankkie.hwcon2016.data.EventContract;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ScheduleListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ScheduleListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     ScheduleListAdapter mScheduleListAdapter;
     int SCHEDULE_LOADER = 0;
@@ -66,6 +69,9 @@ public class ScheduleListFragment extends ListFragment implements LoaderManager.
             EventContract.LocationEntry.COLUMN_NAME_NAME
     };
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Handler handler = new Handler();
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         //Uri uri = Uri.parse(EventContract.EventEntry.CONTENT_URI);
@@ -83,6 +89,17 @@ public class ScheduleListFragment extends ListFragment implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mScheduleListAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        Util.syncData(getActivity(), Util.SYNCFLAG_DOWNLOAD_FAVORITES);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
     }
 
     /**
@@ -141,13 +158,16 @@ public class ScheduleListFragment extends ListFragment implements LoaderManager.
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(SCHEDULE_LOADER, null, this);
-        mCallbacks = (Callbacks)getActivity();
+        mCallbacks = (Callbacks) getActivity();
     }
 
     @Override
