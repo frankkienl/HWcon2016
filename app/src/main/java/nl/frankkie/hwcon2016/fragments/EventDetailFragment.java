@@ -17,6 +17,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -293,6 +294,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         //Should I do this in a ViewHolder? Nah, its not a ListView item.
         mTitle = (TextView) rootView.findViewById(R.id.event_detail_title);
         mDescription = (TextView) rootView.findViewById(R.id.event_detail_description);
+        //http://stackoverflow.com/questions/18571191/why-link-does-not-work-in-the-text-view
+        mDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mKeywords = (TextView) rootView.findViewById(R.id.event_detail_keywords);
         mStartTime = (TextView) rootView.findViewById(R.id.event_detail_starttime);
         mEndTime = (TextView) rootView.findViewById(R.id.event_detail_endtime);
